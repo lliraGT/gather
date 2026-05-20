@@ -27,31 +27,45 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   useEffect(() => {
+    console.log('[UserContext] useEffect montado')
     const supabase = createClient()
     let mounted = true
 
     async function loadProfile(userId: string) {
+      console.log('[UserContext] loadProfile() iniciado para', userId)
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('profiles')
           .select('id, email, full_name, role, active')
           .eq('id', userId)
           .single()
+        console.log('[UserContext] profiles query resultado', {
+          data: data?.id ?? null,
+          error: error?.message ?? null,
+        })
         if (mounted) setProfile((data as Profile) ?? null)
-      } catch {
+      } catch (e) {
+        console.log('[UserContext] loadProfile catch', e)
         if (mounted) setProfile(null)
       } finally {
+        console.log('[UserContext] setLoading(false) — mounted:', mounted)
         if (mounted) setLoading(false)
       }
     }
 
     // Carga inicial explícita — INITIAL_SESSION puede perderse si el
     // listener se registra tarde en hard refresh
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user }, error }) => {
+      console.log('[UserContext] getUser() resolvió', {
+        user: user?.id ?? null,
+        error: error?.message ?? null,
+        mounted,
+      })
       if (!mounted) return
       if (user) {
         loadProfile(user.id)
       } else {
+        console.log('[UserContext] No hay user → redirigiendo a /login')
         setProfile(null)
         setLoading(false)
         const path = window.location.pathname
@@ -64,6 +78,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     // Listener solo para cambios posteriores (login/logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('[UserContext] onAuthStateChange evento:', event)
         if (event === 'INITIAL_SESSION') return
 
         if (session?.user) {

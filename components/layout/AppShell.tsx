@@ -4,7 +4,8 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import { BottomNav } from '@/components/layout/BottomNav'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const { loading } = useUser()
+  const { loading, profile } = useUser()
+  console.log('[AppShell] render — loading:', loading, 'profile:', profile?.id ?? null)
 
   if (loading) {
     return (
