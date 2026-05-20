@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
 import { useUser } from '@/lib/context/UserContext'
 import { createClient } from '@/lib/supabase/client'
 
@@ -15,7 +14,6 @@ const navItems = [
 export function Sidebar() {
   const { profile } = useUser()
   const pathname = usePathname()
-  const router = useRouter()
 
   const visibleItems = navItems.filter(
     item => !profile || item.roles.includes(profile.role)
@@ -24,8 +22,7 @@ export function Sidebar() {
   async function handleSignOut() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.refresh()
-    router.push('/login')
+    window.location.href = '/login'
   }
 
   return (
