@@ -77,7 +77,7 @@ export default function HistoryPage() {
         sunday_services: { id: string; date: string } | null
       }
 
-      const mapped: Row[] = ((data as RawRecord[]) ?? [])
+      const mapped: Row[] = ((data as unknown as RawRecord[]) ?? [])
         .filter(r => r.sunday_services !== null)
         .map(r => ({
           service_id: r.service_id,
