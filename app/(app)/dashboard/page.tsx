@@ -23,7 +23,7 @@ interface AttendanceRecord {
   total_presencial: number
   total_virtual: number
   total_general: number
-  sunday_services?: { id: string; date: string; is_special: boolean }[]
+  sunday_services?: { id: string; date: string; is_special: boolean } | null
 }
 
 interface SundayService {
