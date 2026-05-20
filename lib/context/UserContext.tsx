@@ -28,6 +28,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const supabase = createClient()
+    let mounted = true
 
     async function loadProfile(userId: string) {
       try {
@@ -36,21 +37,42 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           .select('id, email, full_name, role, active')
           .eq('id', userId)
           .single()
-        setProfile((data as Profile) ?? null)
+        if (mounted) setProfile((data as Profile) ?? null)
       } catch {
-        setProfile(null)
+        if (mounted) setProfile(null)
       } finally {
-        setLoading(false)
+        if (mounted) setLoading(false)
       }
     }
 
+    // Carga inicial explícita — INITIAL_SESSION puede perderse si el
+    // listener se registra tarde en hard refresh
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!mounted) return
+      if (user) {
+        loadProfile(user.id)
+      } else {
+        setProfile(null)
+        setLoading(false)
+        const path = window.location.pathname
+        if (!path.startsWith('/login') && !path.startsWith('/auth')) {
+          router.push('/login')
+        }
+      }
+    })
+
+    // Listener solo para cambios posteriores (login/logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      async (event, session) => {
+        if (event === 'INITIAL_SESSION') return
+
         if (session?.user) {
           await loadProfile(session.user.id)
         } else {
-          setProfile(null)
-          setLoading(false)
+          if (mounted) {
+            setProfile(null)
+            setLoading(false)
+          }
           const path = window.location.pathname
           if (!path.startsWith('/login') && !path.startsWith('/auth')) {
             router.push('/login')
@@ -59,7 +81,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
   }, [])
 
   return (
