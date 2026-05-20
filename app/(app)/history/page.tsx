@@ -1,4 +1,7 @@
 'use client'
+
+export const dynamic = 'force-dynamic'
+
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -41,30 +44,59 @@ export default function HistoryPage() {
       const from = page * PAGE_SIZE
       const to = from + PAGE_SIZE - 1
 
-      const { data, count } = await supabase
-        .from('sunday_services')
+      const { data, error, count } = await supabase
+        .from('attendance_records')
         .select(`
-          id, date,
-          attendance_records (
-            salon_principal, toldo, salon_l, ujieres, maestros,
-            ninos, multimedia, facebook, zoom, total_general
+          id, service_id, salon_principal, toldo, salon_l,
+          ujieres, maestros, ninos, multimedia, facebook, zoom,
+          total_general,
+          sunday_services!service_id (
+            id, date
           )
         `, { count: 'exact' })
-        .order('date', { ascending: false })
+        .order('id', { ascending: false })
         .range(from, to)
 
-      interface RawService {
-        id: string
-        date: string
-        attendance_records: Omit<Row, 'service_id' | 'date'>[]
+      if (error) {
+        console.error('History query error:', error)
+        setRows([])
+        setLoading(false)
+        return
       }
-      const mapped: Row[] = ((data as RawService[]) ?? [])
-        .filter(s => s.attendance_records?.length > 0)
-        .map(s => ({
-          service_id: s.id,
-          date: s.date,
-          ...s.attendance_records[0],
+
+      interface RawRecord {
+        id: string
+        service_id: string
+        salon_principal: number
+        toldo: number
+        salon_l: number
+        ujieres: number
+        maestros: number
+        ninos: number
+        multimedia: number
+        facebook: number
+        zoom: number
+        total_general: number
+        sunday_services: { id: string; date: string }[]
+      }
+
+      const mapped: Row[] = ((data as RawRecord[]) ?? [])
+        .filter(r => r.sunday_services?.length > 0)
+        .map(r => ({
+          service_id: r.service_id,
+          date: r.sunday_services[0].date,
+          salon_principal: r.salon_principal,
+          toldo: r.toldo,
+          salon_l: r.salon_l,
+          ujieres: r.ujieres,
+          maestros: r.maestros,
+          ninos: r.ninos,
+          multimedia: r.multimedia,
+          facebook: r.facebook,
+          zoom: r.zoom,
+          total_general: r.total_general,
         }))
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
       setRows(mapped)
       setTotal(count ?? 0)
