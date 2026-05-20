@@ -48,38 +48,27 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient()
-      const { data, error } = await supabase
+
+      // Query 1: ¿Llegan attendance_records sin join?
+      const { data: arData, error: arError } = await supabase
+        .from('attendance_records')
+        .select('id, service_id, total_general')
+        .limit(5)
+
+      console.log('AR sin join:', JSON.stringify({ arData, arError }))
+
+      // Query 2: ¿Funciona el join con sunday_services?
+      const { data: joinData, error: joinError } = await supabase
         .from('attendance_records')
         .select(`
-          id, service_id, salon_principal, toldo, salon_l,
-          ujieres, maestros, ninos, multimedia, facebook, zoom,
-          total_presencial, total_virtual, total_general,
-          sunday_services!service_id (
-            id, date, is_special
-          )
+          id, total_general,
+          sunday_services (id, date)
         `)
-        .limit(300)
+        .limit(5)
 
-      if (error) {
-        console.error('Dashboard query error:', error)
-        setServices([])
-        setLoading(false)
-        return
-      }
+      console.log('AR con join:', JSON.stringify({ joinData, joinError }))
 
-      const transformed: SundayService[] = (data as RawRecord[])
-        .filter(r => r.sunday_services?.length)
-        .map(r => ({
-          id: r.sunday_services[0].id,
-          date: r.sunday_services[0].date,
-          attendance_records: [r],
-        }))
-        .sort((a: SundayService, b: SundayService) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        )
-        .slice(0, 12)
-
-      setServices(transformed)
+      setServices([])
       setLoading(false)
     }
     fetchData()
