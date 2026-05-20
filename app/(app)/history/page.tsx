@@ -50,11 +50,8 @@ export default function HistoryPage() {
           id, service_id, salon_principal, toldo, salon_l,
           ujieres, maestros, ninos, multimedia, facebook, zoom,
           total_general,
-          sunday_services!service_id (
-            id, date
-          )
+          sunday_services (id, date)
         `, { count: 'exact' })
-        .order('id', { ascending: false })
         .range(from, to)
 
       if (error) {
@@ -77,14 +74,14 @@ export default function HistoryPage() {
         facebook: number
         zoom: number
         total_general: number
-        sunday_services: { id: string; date: string }[]
+        sunday_services: { id: string; date: string } | null
       }
 
       const mapped: Row[] = ((data as RawRecord[]) ?? [])
-        .filter(r => r.sunday_services?.length > 0)
+        .filter(r => r.sunday_services !== null)
         .map(r => ({
           service_id: r.service_id,
-          date: r.sunday_services[0].date,
+          date: r.sunday_services!.date,
           salon_principal: r.salon_principal,
           toldo: r.toldo,
           salon_l: r.salon_l,

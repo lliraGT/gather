@@ -45,27 +45,52 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient()
-
-      // Query 1: ¿Llegan attendance_records sin join?
-      const { data: arData, error: arError } = await supabase
-        .from('attendance_records')
-        .select('id, service_id, total_general')
-        .limit(5)
-
-      console.log('AR sin join:', JSON.stringify({ arData, arError }))
-
-      // Query 2: ¿Funciona el join con sunday_services?
-      const { data: joinData, error: joinError } = await supabase
+      const { data, error } = await supabase
         .from('attendance_records')
         .select(`
-          id, total_general,
-          sunday_services (id, date)
+          id, service_id, salon_principal, toldo, salon_l,
+          ujieres, maestros, ninos, multimedia, facebook, zoom,
+          total_presencial, total_virtual, total_general,
+          sunday_services (id, date, is_special)
         `)
-        .limit(5)
+        .limit(300)
 
-      console.log('AR con join:', JSON.stringify({ joinData, joinError }))
+      if (error) {
+        console.error('Dashboard query error:', error)
+        setServices([])
+        setLoading(false)
+        return
+      }
 
-      setServices([])
+      interface RawRecord {
+        id: string
+        service_id: string
+        salon_principal: number
+        toldo: number
+        salon_l: number
+        ujieres: number
+        maestros: number
+        ninos: number
+        multimedia: number
+        facebook: number
+        zoom: number
+        total_presencial: number
+        total_virtual: number
+        total_general: number
+        sunday_services: { id: string; date: string; is_special: boolean } | null
+      }
+
+      const transformed: SundayService[] = ((data as RawRecord[]) ?? [])
+        .filter(r => r.sunday_services !== null)
+        .map(r => ({
+          id: r.sunday_services!.id,
+          date: r.sunday_services!.date,
+          attendance_records: [r],
+        }))
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 12)
+
+      setServices(transformed)
       setLoading(false)
     }
     fetchData()
