@@ -80,7 +80,7 @@ export default function DashboardPage() {
         sunday_services: { id: string; date: string; is_special: boolean } | null
       }
 
-      const transformed: SundayService[] = ((data as RawRecord[]) ?? [])
+      const transformed: SundayService[] = ((data as unknown as RawRecord[]) ?? [])
         .filter(r => r.sunday_services !== null)
         .map(r => ({
           id: r.sunday_services!.id,
