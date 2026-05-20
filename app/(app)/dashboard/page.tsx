@@ -20,6 +20,7 @@ interface AttendanceRecord {
   total_presencial: number
   total_virtual: number
   total_general: number
+  sunday_services?: { id: string; date: string; is_special: boolean }[]
 }
 
 interface SundayService {
@@ -40,20 +41,35 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient()
-      const { data } = await supabase
-        .from('sunday_services')
+      const { data, error } = await supabase
+        .from('attendance_records')
         .select(`
-          id, date,
-          attendance_records (
-            id, service_id, salon_principal, toldo, salon_l,
-            ujieres, maestros, ninos, multimedia, facebook, zoom,
-            total_presencial, total_virtual, total_general
+          id, service_id, salon_principal, toldo, salon_l,
+          ujieres, maestros, ninos, multimedia, facebook, zoom,
+          total_presencial, total_virtual, total_general,
+          sunday_services!service_id (
+            id, date, is_special
           )
         `)
-        .order('date', { ascending: false })
+        .order('sunday_services(date)', { ascending: false })
         .limit(12)
 
-      setServices((data as SundayService[]) ?? [])
+      if (error) {
+        console.error('Dashboard query error:', error)
+        setServices([])
+        setLoading(false)
+        return
+      }
+
+      const transformed: SundayService[] = (data ?? [])
+        .filter((r: AttendanceRecord) => r.sunday_services?.length)
+        .map((r: AttendanceRecord) => ({
+          id: r.sunday_services![0].id,
+          date: r.sunday_services![0].date,
+          attendance_records: [r],
+        }))
+
+      setServices(transformed)
       setLoading(false)
     }
     fetchData()
