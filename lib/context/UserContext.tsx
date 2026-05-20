@@ -1,5 +1,6 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 interface Profile {
@@ -23,6 +24,7 @@ const UserContext = createContext<UserContextValue>({
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     const supabase = createClient()
@@ -49,6 +51,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         } else {
           setProfile(null)
           setLoading(false)
+          const path = window.location.pathname
+          if (!path.startsWith('/login') && !path.startsWith('/auth')) {
+            router.push('/login')
+          }
         }
       }
     )
