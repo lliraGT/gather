@@ -53,9 +53,14 @@ export default function HistoryPage() {
         .order('date', { ascending: false })
         .range(from, to)
 
-      const mapped: Row[] = (data ?? [])
-        .filter((s: any) => s.attendance_records?.length > 0)
-        .map((s: any) => ({
+      interface RawService {
+        id: string
+        date: string
+        attendance_records: Omit<Row, 'service_id' | 'date'>[]
+      }
+      const mapped: Row[] = ((data as RawService[]) ?? [])
+        .filter(s => s.attendance_records?.length > 0)
+        .map(s => ({
           service_id: s.id,
           date: s.date,
           ...s.attendance_records[0],
