@@ -27,7 +27,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   useEffect(() => {
-    console.log('[UserContext] useEffect montado')
     const supabase = createClient()
     let mounted = true
 
@@ -53,33 +52,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // Carga inicial explícita — INITIAL_SESSION puede perderse si el
-    // listener se registra tarde en hard refresh
-    supabase.auth.getUser().then(({ data: { user }, error }) => {
-      console.log('[UserContext] getUser() resolvió', {
-        user: user?.id ?? null,
-        error: error?.message ?? null,
-        mounted,
-      })
-      if (!mounted) return
-      if (user) {
-        loadProfile(user.id)
-      } else {
-        console.log('[UserContext] No hay user → redirigiendo a /login')
-        setProfile(null)
-        setLoading(false)
-        const path = window.location.pathname
-        if (!path.startsWith('/login') && !path.startsWith('/auth')) {
-          router.push('/login')
-        }
-      }
-    })
-
-    // Listener solo para cambios posteriores (login/logout)
+    // onAuthStateChange maneja tanto INITIAL_SESSION (hard refresh)
+    // como cambios posteriores (login/logout). No ignorar INITIAL_SESSION.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('[UserContext] onAuthStateChange evento:', event)
-        if (event === 'INITIAL_SESSION') return
+        console.log('[UserContext] onAuthStateChange evento:', event,
+                    'user:', session?.user?.id ?? null)
 
         if (session?.user) {
           await loadProfile(session.user.id)
