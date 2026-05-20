@@ -29,6 +29,10 @@ interface SundayService {
   attendance_records: AttendanceRecord[]
 }
 
+interface RawRecord extends Omit<AttendanceRecord, 'sunday_services'> {
+  sunday_services: { id: string; date: string; is_special: boolean }[]
+}
+
 function formatDate(dateStr: string) {
   const d = new Date(dateStr + 'T00:00:00')
   return d.toLocaleDateString('es-GT', { month: 'short', day: 'numeric' })
@@ -51,8 +55,7 @@ export default function DashboardPage() {
             id, date, is_special
           )
         `)
-        .order('sunday_services(date)', { ascending: false })
-        .limit(12)
+        .limit(300)
 
       if (error) {
         console.error('Dashboard query error:', error)
@@ -61,13 +64,17 @@ export default function DashboardPage() {
         return
       }
 
-      const transformed: SundayService[] = (data ?? [])
-        .filter((r: AttendanceRecord) => r.sunday_services?.length)
-        .map((r: AttendanceRecord) => ({
-          id: r.sunday_services![0].id,
-          date: r.sunday_services![0].date,
+      const transformed: SundayService[] = (data as RawRecord[])
+        .filter(r => r.sunday_services?.length)
+        .map(r => ({
+          id: r.sunday_services[0].id,
+          date: r.sunday_services[0].date,
           attendance_records: [r],
         }))
+        .sort((a: SundayService, b: SundayService) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+        .slice(0, 12)
 
       setServices(transformed)
       setLoading(false)
