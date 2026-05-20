@@ -32,9 +32,6 @@ interface SundayService {
   attendance_records: AttendanceRecord[]
 }
 
-interface RawRecord extends Omit<AttendanceRecord, 'sunday_services'> {
-  sunday_services: { id: string; date: string; is_special: boolean }[]
-}
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr + 'T00:00:00')
