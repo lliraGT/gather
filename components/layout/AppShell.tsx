@@ -1,20 +1,8 @@
 'use client'
-import { useUser } from '@/lib/context/UserContext'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { BottomNav } from '@/components/layout/BottomNav'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const { loading, profile } = useUser()
-  console.log('[AppShell] render — loading:', loading, 'profile:', profile?.id ?? null)
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
-        <p className="text-sm text-gray-400">Cargando...</p>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
       <div className="hidden md:block">
