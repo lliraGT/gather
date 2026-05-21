@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { GatherLogo } from '@/components/ui/GatherLogo'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -33,14 +34,13 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-xl shadow-md p-8">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-[#1E3A5F] rounded-full flex
-                          items-center justify-center mb-3">
-            <span className="text-white font-bold text-lg">G</span>
+          <div className="mb-3">
+            <GatherLogo size={52} />
           </div>
-          <h1 className="text-2xl font-semibold text-[#1B1B1B]">
-            Gather
+          <h1 className="text-[22px] font-medium text-[#1E3A5F] tracking-[0.12em]">
+            GATHER
           </h1>
-          <p className="text-sm text-[#6B7280] mt-1">
+          <p className="text-[13px] text-gray-400 mt-1">
             Centro Bíblico El Camino
           </p>
         </div>
