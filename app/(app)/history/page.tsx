@@ -113,6 +113,7 @@ export default function HistoryPage() {
 
   async function handleDelete() {
     if (!deleteTarget) return
+    const target = deleteTarget
     setDeleting(true)
     setDeleteError('')
     const supabase = createClient()
@@ -120,7 +121,7 @@ export default function HistoryPage() {
     const { error: recErr } = await supabase
       .from('attendance_records')
       .delete()
-      .eq('id', deleteTarget.recordId)
+      .eq('id', target.recordId)
 
     if (recErr) {
       setDeleteError('Error al eliminar el registro.')
@@ -131,7 +132,7 @@ export default function HistoryPage() {
     const { error: svcErr } = await supabase
       .from('sunday_services')
       .delete()
-      .eq('id', deleteTarget.serviceId)
+      .eq('id', target.serviceId)
 
     if (svcErr) {
       setDeleteError('Error al eliminar el servicio.')
@@ -141,8 +142,8 @@ export default function HistoryPage() {
 
     setDeleteTarget(null)
     setDeleting(false)
-    setRows(prev => prev.filter(r => r.service_id !== deleteTarget.serviceId))
-    setTotal(prev => prev - 1)
+    setRows(prev => prev.filter(r => r.service_id !== target.serviceId))
+    setTotal(prev => Math.max(0, prev - 1))
   }
 
   const canEdit = profile?.role === 'ADMIN' || profile?.role === 'EM'
