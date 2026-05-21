@@ -10,7 +10,7 @@ function getInitials(fullName: string | null, email: string): string {
     const words = fullName.trim().split(/\s+/)
     return words.slice(0, 2).map(w => w[0]).join('').toUpperCase()
   }
-  return email[0].toUpperCase()
+  return (email[0] ?? '?').toUpperCase()
 }
 
 const sections = [
@@ -57,7 +57,7 @@ export function Sidebar() {
       <nav className="flex-1 px-0 overflow-y-auto">
         {sections.map((section, sectionIndex) => {
           const visibleItems = section.items.filter(
-            item => !profile?.role || item.roles.includes(profile.role)
+            item => !profile || item.roles.includes(profile.role)
           )
           if (visibleItems.length === 0) return null
 
