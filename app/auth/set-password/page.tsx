@@ -57,7 +57,7 @@ export default function SetPasswordPage() {
               onChange={e => setPassword(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5
                          text-sm focus:outline-none focus:ring-2
-                         focus:ring-[#2D6A4F]"
+                         focus:ring-[#2E78C8]"
               required
             />
             <input
@@ -67,7 +67,7 @@ export default function SetPasswordPage() {
               onChange={e => setConfirm(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5
                          text-sm focus:outline-none focus:ring-2
-                         focus:ring-[#2D6A4F]"
+                         focus:ring-[#2E78C8]"
               required
             />
             {error && (
@@ -76,8 +76,8 @@ export default function SetPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#2D6A4F] text-white rounded-lg py-2.5
-                         text-sm font-medium hover:bg-[#1B4332]
+              className="w-full bg-[#2E78C8] text-white rounded-lg py-2.5
+                         text-sm font-medium hover:bg-[#1E3A5F]
                          disabled:opacity-50 transition-colors"
             >
               {loading ? 'Guardando...' : 'Crear contraseña'}

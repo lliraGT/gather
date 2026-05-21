@@ -33,7 +33,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-xl shadow-md p-8">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-[#2D6A4F] rounded-full flex
+          <div className="w-12 h-12 bg-[#1E3A5F] rounded-full flex
                           items-center justify-center mb-3">
             <span className="text-white font-bold text-lg">G</span>
           </div>
@@ -52,7 +52,7 @@ export default function LoginPage() {
             onChange={e => setEmail(e.target.value)}
             className="w-full border border-gray-200 rounded-lg px-4
                        py-2.5 text-sm focus:outline-none focus:ring-2
-                       focus:ring-[#2D6A4F]"
+                       focus:ring-[#2E78C8]"
             required
           />
           <input
@@ -62,7 +62,7 @@ export default function LoginPage() {
             onChange={e => setPassword(e.target.value)}
             className="w-full border border-gray-200 rounded-lg px-4
                        py-2.5 text-sm focus:outline-none focus:ring-2
-                       focus:ring-[#2D6A4F]"
+                       focus:ring-[#2E78C8]"
             required
           />
           {error && (
@@ -71,8 +71,8 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#2D6A4F] text-white rounded-lg
-                       py-2.5 text-sm font-medium hover:bg-[#1B4332]
+            className="w-full bg-[#2E78C8] text-white rounded-lg
+                       py-2.5 text-sm font-medium hover:bg-[#1E3A5F]
                        disabled:opacity-50 transition-colors"
           >
             {loading ? 'Ingresando...' : 'Ingresar'}

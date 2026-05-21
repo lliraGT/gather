@@ -149,7 +149,7 @@ export default function AttendanceEditPage() {
               type="date"
               value={date}
               onChange={e => setDate(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
               required
             />
           </div>
@@ -159,7 +159,7 @@ export default function AttendanceEditPage() {
               type="text"
               value={notes}
               onChange={e => setNotes(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
             />
           </div>
         </div>
@@ -175,7 +175,7 @@ export default function AttendanceEditPage() {
                   min="0"
                   value={fields[key]}
                   onChange={e => handleChange(key, e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
                 />
               </div>
             ))}
@@ -193,14 +193,14 @@ export default function AttendanceEditPage() {
                   min="0"
                   value={fields[key]}
                   onChange={e => handleChange(key, e.target.value)}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
                 />
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-[#2D6A4F]/5 rounded-xl p-5">
+        <div className="bg-[#1E3A5F]/5 rounded-xl p-5">
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-600">Total Presencial</span>
             <span className="font-semibold text-gray-800">{presencial}</span>
@@ -209,9 +209,9 @@ export default function AttendanceEditPage() {
             <span className="text-gray-600">Total Virtual</span>
             <span className="font-semibold text-gray-800">{virtual}</span>
           </div>
-          <div className="flex justify-between text-base border-t border-[#2D6A4F]/20 pt-3">
+          <div className="flex justify-between text-base border-t border-[#1E3A5F]/20 pt-3">
             <span className="font-semibold text-gray-800">Total General</span>
-            <span className="font-bold text-[#2D6A4F] text-lg">{general}</span>
+            <span className="font-bold text-[#1E3A5F] text-lg">{general}</span>
           </div>
         </div>
 
@@ -228,7 +228,7 @@ export default function AttendanceEditPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 bg-[#2D6A4F] text-white rounded-lg py-2.5 text-sm font-medium hover:bg-[#1B4332] disabled:opacity-50 transition-colors"
+            className="flex-1 bg-[#2E78C8] text-white rounded-lg py-2.5 text-sm font-medium hover:bg-[#1E3A5F] disabled:opacity-50 transition-colors"
           >
             {saving ? 'Guardando...' : 'Actualizar'}
           </button>

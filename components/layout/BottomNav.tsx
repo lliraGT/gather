@@ -63,7 +63,7 @@ export function BottomNav() {
             key={item.href}
             href={item.href}
             className={`flex-1 flex flex-col items-center justify-center py-2 transition-colors ${
-              isActive ? 'text-[#2D6A4F]' : 'text-gray-400'
+              isActive ? 'text-[#2E78C8]' : 'text-gray-400'
             }`}
           >
             {item.icon}

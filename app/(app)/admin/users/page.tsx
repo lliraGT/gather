@@ -104,7 +104,7 @@ export default function AdminUsersPage() {
         <h1 className="text-xl font-semibold text-gray-800">Usuarios</h1>
         <button
           onClick={() => { setShowInvite(true); setMessage('') }}
-          className="bg-[#2D6A4F] text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-[#1B4332] transition-colors"
+          className="bg-[#2E78C8] text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-[#1E3A5F] transition-colors"
         >
           Invitar usuario
         </button>
@@ -151,7 +151,7 @@ export default function AdminUsersPage() {
                 <td className="px-4 py-3 text-right">
                   <button
                     onClick={() => openEdit(user)}
-                    className="text-xs text-[#2D6A4F] hover:underline"
+                    className="text-xs text-[#2E78C8] hover:underline"
                   >
                     Editar
                   </button>
@@ -172,20 +172,20 @@ export default function AdminUsersPage() {
                 placeholder="Nombre completo"
                 value={inviteForm.full_name}
                 onChange={e => setInviteForm(f => ({ ...f, full_name: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
               />
               <input
                 type="email"
                 placeholder="Correo electrónico"
                 value={inviteForm.email}
                 onChange={e => setInviteForm(f => ({ ...f, email: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
                 required
               />
               <select
                 value={inviteForm.role}
                 onChange={e => setInviteForm(f => ({ ...f, role: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
               >
                 <option value="EM">EM</option>
                 <option value="ANCIANO">Anciano</option>
@@ -202,7 +202,7 @@ export default function AdminUsersPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-[#2D6A4F] text-white rounded-lg py-2 text-sm font-medium hover:bg-[#1B4332] disabled:opacity-50"
+                  className="flex-1 bg-[#2E78C8] text-white rounded-lg py-2 text-sm font-medium hover:bg-[#1E3A5F] disabled:opacity-50"
                 >
                   {submitting ? 'Enviando...' : 'Invitar'}
                 </button>
@@ -224,12 +224,12 @@ export default function AdminUsersPage() {
                 placeholder="Nombre completo"
                 value={editForm.full_name}
                 onChange={e => setEditForm(f => ({ ...f, full_name: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
               />
               <select
                 value={editForm.role}
                 onChange={e => setEditForm(f => ({ ...f, role: e.target.value }))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
               >
                 <option value="EM">EM</option>
                 <option value="ANCIANO">Anciano</option>
@@ -240,7 +240,7 @@ export default function AdminUsersPage() {
                   type="checkbox"
                   checked={editForm.active}
                   onChange={e => setEditForm(f => ({ ...f, active: e.target.checked }))}
-                  className="accent-[#2D6A4F]"
+                  className="accent-[#2E78C8]"
                 />
                 Usuario activo
               </label>
@@ -256,7 +256,7 @@ export default function AdminUsersPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-[#2D6A4F] text-white rounded-lg py-2 text-sm font-medium hover:bg-[#1B4332] disabled:opacity-50"
+                  className="flex-1 bg-[#2E78C8] text-white rounded-lg py-2 text-sm font-medium hover:bg-[#1E3A5F] disabled:opacity-50"
                 >
                   {submitting ? 'Guardando...' : 'Guardar'}
                 </button>

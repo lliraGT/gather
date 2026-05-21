@@ -174,7 +174,7 @@ export default function HistoryPage() {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="text-sm text-[#2D6A4F] disabled:text-gray-300 hover:underline"
+              className="text-sm text-[#2E78C8] disabled:text-gray-300 hover:underline"
             >
               Anterior
             </button>
@@ -184,7 +184,7 @@ export default function HistoryPage() {
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className="text-sm text-[#2D6A4F] disabled:text-gray-300 hover:underline"
+              className="text-sm text-[#2E78C8] disabled:text-gray-300 hover:underline"
             >
               Siguiente
             </button>

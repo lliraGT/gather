@@ -147,7 +147,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl p-5 shadow-sm">
           <p className="text-xs text-gray-400 mb-1">Último domingo</p>
-          <p className="text-3xl font-bold text-[#2D6A4F]">
+          <p className="text-3xl font-bold text-[#1E3A5F]">
             {latest?.total_general ?? '—'}
           </p>
           <p className="text-xs text-gray-400 mt-1">total general</p>
@@ -189,9 +189,9 @@ export default function DashboardPage() {
             <Line
               type="monotone"
               dataKey="total"
-              stroke="#2D6A4F"
+              stroke="#2E78C8"
               strokeWidth={2}
-              dot={{ fill: '#2D6A4F', r: 3 }}
+              dot={{ fill: '#2E78C8', r: 3 }}
               activeDot={{ r: 5 }}
             />
           </LineChart>

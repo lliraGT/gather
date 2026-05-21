@@ -28,7 +28,7 @@ export function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-full w-[200px] bg-white border-r border-gray-100 flex flex-col z-10">
       <div className="px-5 py-6">
-        <span className="text-[#2D6A4F] font-bold text-lg tracking-tight">
+        <span className="text-[#1E3A5F] font-bold text-lg tracking-tight">
           Gather
         </span>
       </div>
@@ -42,7 +42,7 @@ export function Sidebar() {
               href={item.href}
               className={`flex items-center px-3 py-2 rounded-lg mb-1 text-sm transition-colors ${
                 isActive
-                  ? 'bg-[#2D6A4F]/10 text-[#2D6A4F] font-medium'
+                  ? 'bg-[#1E3A5F]/10 text-[#1E3A5F] font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
