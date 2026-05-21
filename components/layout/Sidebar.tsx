@@ -50,7 +50,7 @@ export function Sidebar() {
       {/* Header */}
       <div className="flex items-center gap-2 px-4 py-5">
         <GatherLogo size={26} />
-        <span className="text-[#1E3A5F] font-medium text-base">gather</span>
+        <span className="text-[16px] font-medium text-[#1E3A5F] tracking-[0.05em]">GATHER</span>
       </div>
 
       {/* Nav */}
