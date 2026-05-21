@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useUser } from '@/lib/context/UserContext'
 
 interface Row {
+  record_id: string
   service_id: string
   date: string
   salon_principal: number
@@ -37,6 +38,13 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(0)
   const [total, setTotal] = useState(0)
+  const [deleteTarget, setDeleteTarget] = useState<{
+    serviceId: string
+    recordId: string
+    date: string
+  } | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   useEffect(() => {
     async function fetchData() {
@@ -80,6 +88,7 @@ export default function HistoryPage() {
       const mapped: Row[] = ((data as unknown as RawRecord[]) ?? [])
         .filter(r => r.sunday_services !== null)
         .map(r => ({
+          record_id: r.id,
           service_id: r.service_id,
           date: r.sunday_services!.date,
           salon_principal: r.salon_principal,
@@ -101,6 +110,40 @@ export default function HistoryPage() {
     }
     fetchData()
   }, [page])
+
+  async function handleDelete() {
+    if (!deleteTarget) return
+    setDeleting(true)
+    setDeleteError('')
+    const supabase = createClient()
+
+    const { error: recErr } = await supabase
+      .from('attendance_records')
+      .delete()
+      .eq('id', deleteTarget.recordId)
+
+    if (recErr) {
+      setDeleteError('Error al eliminar el registro.')
+      setDeleting(false)
+      return
+    }
+
+    const { error: svcErr } = await supabase
+      .from('sunday_services')
+      .delete()
+      .eq('id', deleteTarget.serviceId)
+
+    if (svcErr) {
+      setDeleteError('Error al eliminar el servicio.')
+      setDeleting(false)
+      return
+    }
+
+    setDeleteTarget(null)
+    setDeleting(false)
+    setRows(prev => prev.filter(r => r.service_id !== deleteTarget.serviceId))
+    setTotal(prev => prev - 1)
+  }
 
   const canEdit = profile?.role === 'ADMIN' || profile?.role === 'EM'
   const totalPages = Math.ceil(total / PAGE_SIZE)
@@ -133,12 +176,13 @@ export default function HistoryPage() {
                 <th className="text-right px-3 py-3">FB</th>
                 <th className="text-right px-3 py-3">Zoom</th>
                 <th className="text-right px-4 py-3 font-semibold">Total</th>
+                {canEdit && <th className="px-3 py-3" />}
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="text-center py-12 text-gray-400 text-sm">
+                  <td colSpan={canEdit ? 12 : 11} className="text-center py-12 text-gray-400 text-sm">
                     No hay registros.
                   </td>
                 </tr>
@@ -146,10 +190,7 @@ export default function HistoryPage() {
                 rows.map(row => (
                   <tr
                     key={row.service_id}
-                    className={`border-b border-gray-50 last:border-0 ${
-                      canEdit ? 'hover:bg-gray-50 cursor-pointer' : ''
-                    }`}
-                    onClick={() => canEdit && router.push(`/attendance/${row.service_id}/edit`)}
+                    className="border-b border-gray-50 last:border-0"
                   >
                     <td className="px-4 py-3 text-gray-700">{formatDate(row.date)}</td>
                     <td className="px-3 py-3 text-right text-gray-600">{row.salon_principal}</td>
@@ -162,6 +203,26 @@ export default function HistoryPage() {
                     <td className="px-3 py-3 text-right text-gray-600">{row.facebook}</td>
                     <td className="px-3 py-3 text-right text-gray-600">{row.zoom}</td>
                     <td className="px-4 py-3 text-right font-semibold text-gray-800">{row.total_general}</td>
+                    {canEdit && (
+                      <td className="px-3 py-3">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            onClick={() => router.push(`/attendance/${row.service_id}/edit`)}
+                            className="p-1.5 rounded-lg text-[#2E78C8] hover:bg-[#E6F0FA] transition-colors"
+                            title="Editar"
+                          >
+                            <i className="ti ti-pencil text-[14px]" aria-hidden="true" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget({ serviceId: row.service_id, recordId: row.record_id, date: row.date })}
+                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-50 transition-colors"
+                            title="Eliminar"
+                          >
+                            <i className="ti ti-trash text-[14px]" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))
               )}
@@ -191,6 +252,38 @@ export default function HistoryPage() {
           </div>
         )}
       </div>
+
+      {deleteTarget && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-lg max-w-sm w-full p-6">
+            <h2 className="text-base font-semibold text-gray-800 mb-2">Eliminar registro</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              ¿Eliminar el registro del{' '}
+              <span className="font-medium">{formatDate(deleteTarget.date)}</span>?{' '}
+              Esta acción no se puede deshacer.
+            </p>
+            {deleteError && (
+              <p className="text-red-500 text-xs mb-3">{deleteError}</p>
+            )}
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => { setDeleteTarget(null); setDeleteError('') }}
+                disabled={deleting}
+                className="px-4 py-2 text-sm border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="px-4 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50 transition-colors"
+              >
+                {deleting ? 'Eliminando...' : 'Eliminar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
