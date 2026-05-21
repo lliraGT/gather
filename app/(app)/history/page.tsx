@@ -53,16 +53,14 @@ export default function HistoryPage() {
       const to = from + PAGE_SIZE - 1
 
       const { data, error, count } = await supabase
-        .from('sunday_services')
+        .from('attendance_records')
         .select(`
-          id, date,
-          attendance_records (
-            id, salon_principal, toldo, salon_l,
-            ujieres, maestros, ninos, multimedia, facebook, zoom,
-            total_general
-          )
+          id, service_id, salon_principal, toldo, salon_l,
+          ujieres, maestros, ninos, multimedia, facebook, zoom,
+          total_general,
+          sunday_services (id, date)
         `, { count: 'exact' })
-        .order('date', { ascending: false })
+        .order('date', { foreignTable: 'sunday_services', ascending: false })
         .range(from, to)
 
       if (error) {
@@ -72,44 +70,39 @@ export default function HistoryPage() {
         return
       }
 
-      interface RawService {
+      interface RawRecord {
         id: string
-        date: string
-        attendance_records: {
-          id: string
-          salon_principal: number
-          toldo: number
-          salon_l: number
-          ujieres: number
-          maestros: number
-          ninos: number
-          multimedia: number
-          facebook: number
-          zoom: number
-          total_general: number
-        }[]
+        service_id: string
+        salon_principal: number
+        toldo: number
+        salon_l: number
+        ujieres: number
+        maestros: number
+        ninos: number
+        multimedia: number
+        facebook: number
+        zoom: number
+        total_general: number
+        sunday_services: { id: string; date: string } | null
       }
 
-      const mapped: Row[] = ((data as unknown as RawService[]) ?? [])
-        .filter(r => r.attendance_records.length > 0)
-        .map(r => {
-          const rec = r.attendance_records[0]
-          return {
-            record_id: rec.id,
-            service_id: r.id,
-            date: r.date,
-            salon_principal: rec.salon_principal,
-            toldo: rec.toldo,
-            salon_l: rec.salon_l,
-            ujieres: rec.ujieres,
-            maestros: rec.maestros,
-            ninos: rec.ninos,
-            multimedia: rec.multimedia,
-            facebook: rec.facebook,
-            zoom: rec.zoom,
-            total_general: rec.total_general,
-          }
-        })
+      const mapped: Row[] = ((data as unknown as RawRecord[]) ?? [])
+        .filter(r => r.sunday_services !== null)
+        .map(r => ({
+          record_id: r.id,
+          service_id: r.service_id,
+          date: r.sunday_services!.date,
+          salon_principal: r.salon_principal,
+          toldo: r.toldo,
+          salon_l: r.salon_l,
+          ujieres: r.ujieres,
+          maestros: r.maestros,
+          ninos: r.ninos,
+          multimedia: r.multimedia,
+          facebook: r.facebook,
+          zoom: r.zoom,
+          total_general: r.total_general,
+        }))
 
       setRows(mapped)
       setTotal(count ?? 0)
