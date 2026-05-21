@@ -60,6 +60,7 @@ export default function HistoryPage() {
           total_general,
           sunday_services (id, date)
         `, { count: 'exact' })
+        .order('date', { referencedTable: 'sunday_services', ascending: false })
         .range(from, to)
 
       if (error) {
@@ -102,7 +103,6 @@ export default function HistoryPage() {
           zoom: r.zoom,
           total_general: r.total_general,
         }))
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
       setRows(mapped)
       setTotal(count ?? 0)
