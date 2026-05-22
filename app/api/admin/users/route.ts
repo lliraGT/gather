@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
   const adminClient = createAdminClient()
   const { data, error } = await adminClient.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/confirm`,
     data: { full_name, role },
   })
 
