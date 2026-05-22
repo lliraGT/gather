@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import type { EmailOtpType } from '@supabase/auth-js'
 import { cookies } from 'next/headers'
 
 export async function GET(request: Request) {
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
     }
   } else if (token_hash && type) {
     // Flujo OTP / invite (token en query param)
-    const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as any })
+    const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as EmailOtpType })
     if (error) {
       return NextResponse.redirect(new URL('/login?error=auth_error', requestUrl.origin))
     }
