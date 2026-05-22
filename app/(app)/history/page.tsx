@@ -72,28 +72,35 @@ export default function HistoryPage() {
         return
       }
 
+      console.log('[history] raw first row:', JSON.stringify(data?.[0], null, 2))
+
+      type AttRec = {
+        id: string
+        salon_principal: number
+        toldo: number
+        salon_l: number
+        ujieres: number
+        maestros: number
+        ninos: number
+        multimedia: number
+        facebook: number
+        zoom: number
+        total_general: number
+      }
+
       interface RawService {
         id: string
         date: string
-        attendance_records: Array<{
-          id: string
-          salon_principal: number
-          toldo: number
-          salon_l: number
-          ujieres: number
-          maestros: number
-          ninos: number
-          multimedia: number
-          facebook: number
-          zoom: number
-          total_general: number
-        }>
+        attendance_records: AttRec[] | AttRec | null
       }
 
       const mapped: Row[] = ((data as unknown as RawService[]) ?? [])
-        .filter(s => s.attendance_records.length > 0)
         .map(s => {
-          const rec = s.attendance_records[0]
+          const ar = s.attendance_records
+          const rec: AttRec | null = Array.isArray(ar)
+            ? (ar.length > 0 ? ar[0] : null)
+            : ar
+          if (!rec) return null
           return {
             record_id: rec.id,
             service_id: s.id,
@@ -110,6 +117,7 @@ export default function HistoryPage() {
             total_general: rec.total_general,
           }
         })
+        .filter((r): r is Row => r !== null)
 
       setRows(mapped)
       setTotal(count ?? 0)
