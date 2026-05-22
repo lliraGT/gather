@@ -53,14 +53,16 @@ export default function HistoryPage() {
       const to = from + PAGE_SIZE - 1
 
       const { data, error, count } = await supabase
-        .from('attendance_records')
+        .from('sunday_services')
         .select(`
-          id, service_id, salon_principal, toldo, salon_l,
-          ujieres, maestros, ninos, multimedia, facebook, zoom,
-          total_general,
-          sunday_services (id, date)
+          id, date,
+          attendance_records (
+            id, salon_principal, toldo, salon_l,
+            ujieres, maestros, ninos, multimedia, facebook, zoom,
+            total_general
+          )
         `, { count: 'exact' })
-        .order('date', { foreignTable: 'sunday_services', ascending: false })
+        .order('date', { ascending: false })
         .range(from, to)
 
       if (error) {
@@ -70,39 +72,44 @@ export default function HistoryPage() {
         return
       }
 
-      interface RawRecord {
+      interface RawService {
         id: string
-        service_id: string
-        salon_principal: number
-        toldo: number
-        salon_l: number
-        ujieres: number
-        maestros: number
-        ninos: number
-        multimedia: number
-        facebook: number
-        zoom: number
-        total_general: number
-        sunday_services: { id: string; date: string } | null
+        date: string
+        attendance_records: Array<{
+          id: string
+          salon_principal: number
+          toldo: number
+          salon_l: number
+          ujieres: number
+          maestros: number
+          ninos: number
+          multimedia: number
+          facebook: number
+          zoom: number
+          total_general: number
+        }>
       }
 
-      const mapped: Row[] = ((data as unknown as RawRecord[]) ?? [])
-        .filter(r => r.sunday_services !== null)
-        .map(r => ({
-          record_id: r.id,
-          service_id: r.service_id,
-          date: r.sunday_services!.date,
-          salon_principal: r.salon_principal,
-          toldo: r.toldo,
-          salon_l: r.salon_l,
-          ujieres: r.ujieres,
-          maestros: r.maestros,
-          ninos: r.ninos,
-          multimedia: r.multimedia,
-          facebook: r.facebook,
-          zoom: r.zoom,
-          total_general: r.total_general,
-        }))
+      const mapped: Row[] = ((data as unknown as RawService[]) ?? [])
+        .filter(s => s.attendance_records.length > 0)
+        .map(s => {
+          const rec = s.attendance_records[0]
+          return {
+            record_id: rec.id,
+            service_id: s.id,
+            date: s.date,
+            salon_principal: rec.salon_principal,
+            toldo: rec.toldo,
+            salon_l: rec.salon_l,
+            ujieres: rec.ujieres,
+            maestros: rec.maestros,
+            ninos: rec.ninos,
+            multimedia: rec.multimedia,
+            facebook: rec.facebook,
+            zoom: rec.zoom,
+            total_general: rec.total_general,
+          }
+        })
 
       setRows(mapped)
       setTotal(count ?? 0)
@@ -116,26 +123,14 @@ export default function HistoryPage() {
     const target = deleteTarget
     setDeleting(true)
     setDeleteError('')
-    const supabase = createClient()
 
-    const { error: recErr } = await supabase
-      .from('attendance_records')
-      .delete()
-      .eq('id', target.recordId)
+    const res = await fetch(`/api/attendance/${target.serviceId}`, {
+      method: 'DELETE',
+    })
 
-    if (recErr) {
-      setDeleteError('Error al eliminar el registro.')
-      setDeleting(false)
-      return
-    }
-
-    const { error: svcErr } = await supabase
-      .from('sunday_services')
-      .delete()
-      .eq('id', target.serviceId)
-
-    if (svcErr) {
-      setDeleteError('Error al eliminar el servicio.')
+    if (!res.ok) {
+      const data = await res.json()
+      setDeleteError(data.error ?? 'Error al eliminar')
       setDeleting(false)
       return
     }
