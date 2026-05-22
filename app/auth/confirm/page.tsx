@@ -17,6 +17,15 @@ export default function AuthConfirmPage() {
       const hash = window.location.hash
       if (hash) {
         const params = new URLSearchParams(hash.replace('#', ''))
+
+        // Manejar error de Supabase (token expirado, inválido, etc.)
+        const error = params.get('error')
+        if (error) {
+          const description = params.get('error_description') ?? 'Link inválido o expirado'
+          router.replace(`/login?error=${encodeURIComponent(description)}`)
+          return
+        }
+
         const accessToken = params.get('access_token')
         const refreshToken = params.get('refresh_token')
         const type = params.get('type')
