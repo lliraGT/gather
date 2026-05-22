@@ -21,7 +21,7 @@ export default function AdminUsersPage() {
   const [showInvite, setShowInvite] = useState(false)
   const [editingUser, setEditingUser] = useState<Profile | null>(null)
 
-  const [inviteForm, setInviteForm] = useState({ email: '', full_name: '', role: 'EM' })
+  const [inviteForm, setInviteForm] = useState({ email: '', full_name: '', role: 'ANCIANO' })
   const [editForm, setEditForm] = useState({ full_name: '', role: 'EM', active: true })
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState('')
@@ -58,7 +58,7 @@ export default function AdminUsersPage() {
     } else {
       setMessage('Invitación enviada a ' + inviteForm.email)
       setShowInvite(false)
-      setInviteForm({ email: '', full_name: '', role: 'EM' })
+      setInviteForm({ email: '', full_name: '', role: 'ANCIANO' })
       fetchUsers()
     }
     setSubmitting(false)
@@ -187,8 +187,8 @@ export default function AdminUsersPage() {
                 onChange={e => setInviteForm(f => ({ ...f, role: e.target.value }))}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2E78C8]"
               >
-                <option value="EM">EM</option>
                 <option value="ANCIANO">Anciano</option>
+                <option value="EM">EM</option>
               </select>
               {message && <p className="text-red-500 text-xs">{message}</p>}
               <div className="flex gap-2 pt-1">

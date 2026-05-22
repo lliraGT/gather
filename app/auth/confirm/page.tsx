@@ -10,9 +10,6 @@ export default function AuthConfirmPage() {
     const supabase = createClient()
 
     const handleAuth = async () => {
-      console.log('CONFIRM - href:', window.location.href)
-      console.log('CONFIRM - hash:', window.location.hash)
-      console.log('CONFIRM - search:', window.location.search)
       // Leer tokens del hash (flujo legacy Supabase invitaciones)
       const hash = window.location.hash
       if (hash) {
