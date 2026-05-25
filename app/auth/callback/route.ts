@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
   const token_hash = requestUrl.searchParams.get('token_hash')
+  const token = requestUrl.searchParams.get('token')
   const type = requestUrl.searchParams.get('type') as string | null
   const next = requestUrl.searchParams.get('next') ?? '/dashboard'
 
@@ -37,6 +38,15 @@ export async function GET(request: Request) {
   } else if (token_hash && type) {
     // Flujo OTP / invite (token en query param)
     const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as EmailOtpType })
+    if (error) {
+      return NextResponse.redirect(new URL('/login?error=auth_error', requestUrl.origin))
+    }
+  } else if (token && type) {
+    // Flujo recovery con ?token=pkce_... (Supabase PKCE moderno)
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: token,
+      type: type as EmailOtpType,
+    })
     if (error) {
       return NextResponse.redirect(new URL('/login?error=auth_error', requestUrl.origin))
     }
