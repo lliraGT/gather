@@ -65,6 +65,11 @@ export default function LoginPage() {
                        focus:ring-[#2E78C8]"
             required
           />
+          <div className="flex justify-end">
+            <a href="/auth/forgot-password" className="text-xs text-[#2E78C8] hover:underline">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
           {error && (
             <p className="text-red-500 text-xs">{error}</p>
           )}
