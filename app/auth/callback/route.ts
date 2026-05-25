@@ -42,9 +42,11 @@ export async function GET(request: Request) {
     }
   }
 
-  // Si es invitación, redirige a set-password
   if (type === 'invite') {
     return NextResponse.redirect(new URL('/auth/set-password', requestUrl.origin))
+  }
+  if (type === 'recovery') {
+    return NextResponse.redirect(new URL('/auth/reset-password', requestUrl.origin))
   }
 
   return NextResponse.redirect(new URL(next, requestUrl.origin))
