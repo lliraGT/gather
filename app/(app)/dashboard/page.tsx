@@ -124,6 +124,8 @@ export default function DashboardPage() {
   }
 
   const latest = servicesWithData[0]?.attendance_records[0]
+  const prev = servicesWithData[1]?.attendance_records[0]
+  const lastDiff = prev != null ? (latest?.total_general ?? 0) - (prev.total_general ?? 0) : null
   const lastFour = servicesWithData.slice(0, 4).map(s => s.attendance_records[0]?.total_general ?? 0)
   const avg4 = lastFour.length > 0
     ? Math.round(lastFour.reduce((a, b) => a + b, 0) / lastFour.length)
@@ -150,6 +152,11 @@ export default function DashboardPage() {
           <p className="text-3xl font-bold text-[#1E3A5F]">
             {latest?.total_general ?? '—'}
           </p>
+          {lastDiff !== null && (
+            <p className="text-sm font-medium mt-1" style={{ color: lastDiff > 0 ? '#16a34a' : lastDiff < 0 ? '#dc2626' : '#6b7280' }}>
+              {lastDiff > 0 ? `↑ +${lastDiff}` : lastDiff < 0 ? `↓ ${lastDiff}` : '→ Sin cambio'}
+            </p>
+          )}
           <p className="text-xs text-gray-400 mt-1">total general</p>
         </div>
         <div className="bg-white rounded-xl p-5 shadow-sm">
