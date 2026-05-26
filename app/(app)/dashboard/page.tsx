@@ -141,9 +141,9 @@ export default function DashboardPage() {
   const maxService = servicesWithData.find(s => s.attendance_records[0]?.total_general === maxTotal)
 
   const currentYear = new Date().getFullYear()
-  const availableYears = [...new Set(
+  const availableYears = Array.from(new Set(
     allServices.map(s => new Date(s.date + 'T00:00:00').getFullYear())
-  )].sort((a, b) => b - a)
+  )).sort((a, b) => b - a)
 
   const filteredServices = period === '12w'
     ? servicesWithData.slice(0, 12)
