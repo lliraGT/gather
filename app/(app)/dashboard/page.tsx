@@ -130,6 +130,11 @@ export default function DashboardPage() {
   const avg4 = lastFour.length > 0
     ? Math.round(lastFour.reduce((a, b) => a + b, 0) / lastFour.length)
     : 0
+  const prevFour = servicesWithData.slice(4, 8).map(s => s.attendance_records[0]?.total_general ?? 0)
+  const avgPrev = prevFour.length > 0
+    ? Math.round(prevFour.reduce((a, b) => a + b, 0) / prevFour.length)
+    : null
+  const avgDiff = avgPrev !== null && servicesWithData.length >= 5 ? avg4 - avgPrev : null
   const allTotals = servicesWithData.map(s => s.attendance_records[0]?.total_general ?? 0)
   const maxTotal = Math.max(...allTotals)
 
@@ -162,6 +167,14 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl p-5 shadow-sm">
           <p className="text-xs text-gray-400 mb-1">Promedio 4 semanas</p>
           <p className="text-3xl font-bold text-gray-800">{avg4}</p>
+          {avgDiff !== null && (
+            <p className="text-sm font-medium mt-1" style={{ color: avgDiff > 0 ? '#16a34a' : avgDiff < 0 ? '#dc2626' : '#6b7280' }}>
+              {avgDiff > 0 ? `↑ +${avgDiff}` : avgDiff < 0 ? `↓ ${avgDiff}` : '→ Sin cambio'}
+            </p>
+          )}
+          {avgPrev !== null && servicesWithData.length >= 5 && (
+            <p className="text-xs text-gray-400 mt-0.5">vs {avgPrev} período ant.</p>
+          )}
           <p className="text-xs text-gray-400 mt-1">total general</p>
         </div>
         <div className="bg-white rounded-xl p-5 shadow-sm">
