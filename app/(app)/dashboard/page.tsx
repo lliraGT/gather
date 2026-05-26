@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
 } from 'recharts'
 
 interface AttendanceRecord {
@@ -144,6 +144,9 @@ export default function DashboardPage() {
       fecha: formatDate(s.date),
       total: s.attendance_records[0]?.total_general ?? 0,
     }))
+  const chartAvg = chartData.length > 0
+    ? Math.round(chartData.reduce((a, b) => a + b.total, 0) / chartData.length)
+    : 0
 
   const tableRows = servicesWithData.slice(0, 8)
 
@@ -213,6 +216,12 @@ export default function DashboardPage() {
               strokeWidth={2}
               dot={{ fill: '#2E78C8', r: 3 }}
               activeDot={{ r: 5 }}
+            />
+            <ReferenceLine
+              y={chartAvg}
+              stroke="#94a3b8"
+              strokeDasharray="4 4"
+              label={{ value: `Prom. ${chartAvg}`, position: 'insideTopRight', fontSize: 11, fill: '#64748b' }}
             />
           </LineChart>
         </ResponsiveContainer>
