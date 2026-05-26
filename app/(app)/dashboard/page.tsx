@@ -137,6 +137,7 @@ export default function DashboardPage() {
   const avgDiff = avgPrev !== null && servicesWithData.length >= 5 ? avg4 - avgPrev : null
   const allTotals = servicesWithData.map(s => s.attendance_records[0]?.total_general ?? 0)
   const maxTotal = Math.max(...allTotals)
+  const maxService = servicesWithData.find(s => s.attendance_records[0]?.total_general === maxTotal)
 
   const chartData = [...servicesWithData]
     .reverse()
@@ -157,23 +158,23 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl p-5 shadow-sm">
           <p className="text-xs text-gray-400 mb-1">Último domingo</p>
-          <p className="text-3xl font-bold text-[#1E3A5F]">
+          <p className="text-4xl font-bold text-[#1E3A5F]">
             {latest?.total_general ?? '—'}
           </p>
           {lastDiff !== null && (
-            <p className="text-sm font-medium mt-1" style={{ color: lastDiff > 0 ? '#16a34a' : lastDiff < 0 ? '#dc2626' : '#6b7280' }}>
-              {lastDiff > 0 ? `↑ +${lastDiff}` : lastDiff < 0 ? `↓ ${lastDiff}` : '→ Sin cambio'}
-            </p>
+            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold mt-2 ${lastDiff > 0 ? 'bg-green-50 text-green-700' : lastDiff < 0 ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-500'}`}>
+              {lastDiff > 0 ? `↑ +${lastDiff} vs sem. ant.` : lastDiff < 0 ? `↓ ${lastDiff} vs sem. ant.` : '→ Sin cambio'}
+            </span>
           )}
           <p className="text-xs text-gray-400 mt-1">total general</p>
         </div>
         <div className="bg-white rounded-xl p-5 shadow-sm">
           <p className="text-xs text-gray-400 mb-1">Promedio 4 semanas</p>
-          <p className="text-3xl font-bold text-gray-800">{avg4}</p>
+          <p className="text-4xl font-bold text-gray-800">{avg4}</p>
           {avgDiff !== null && (
-            <p className="text-sm font-medium mt-1" style={{ color: avgDiff > 0 ? '#16a34a' : avgDiff < 0 ? '#dc2626' : '#6b7280' }}>
-              {avgDiff > 0 ? `↑ +${avgDiff}` : avgDiff < 0 ? `↓ ${avgDiff}` : '→ Sin cambio'}
-            </p>
+            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold mt-2 ${avgDiff > 0 ? 'bg-green-50 text-green-700' : avgDiff < 0 ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-500'}`}>
+              {avgDiff > 0 ? `↑ +${avgDiff} vs 4 sem. ant.` : avgDiff < 0 ? `↓ ${avgDiff} vs 4 sem. ant.` : '→ Sin cambio'}
+            </span>
           )}
           {avgPrev !== null && servicesWithData.length >= 5 && (
             <p className="text-xs text-gray-400 mt-0.5">vs {avgPrev} período ant.</p>
@@ -182,7 +183,10 @@ export default function DashboardPage() {
         </div>
         <div className="bg-white rounded-xl p-5 shadow-sm">
           <p className="text-xs text-gray-400 mb-1">Máximo histórico</p>
-          <p className="text-3xl font-bold text-gray-800">{maxTotal}</p>
+          <p className="text-4xl font-bold text-gray-800">{maxTotal}</p>
+          {maxService && (
+            <p className="text-xs text-gray-400 mt-1">récord — {formatDate(maxService.date)}</p>
+          )}
           <p className="text-xs text-gray-400 mt-1">total general</p>
         </div>
       </div>
