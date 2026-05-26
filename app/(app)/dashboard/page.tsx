@@ -206,9 +206,42 @@ export default function DashboardPage() {
       </div>
 
       <div className="bg-white rounded-xl p-5 shadow-sm">
-        <p className="text-sm font-medium text-gray-700 mb-4">
-          Tendencia últimas 12 semanas
-        </p>
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-medium text-gray-700">
+            {period === '12w' ? 'Últimas 12 semanas'
+              : period === 'ytd' ? `Año en curso (${currentYear})`
+              : period === 'year' ? `${selectedYear}`
+              : 'Histórico completo'}
+          </p>
+          <div className="flex items-center gap-1 flex-wrap justify-end">
+            {(['12w', 'ytd', 'all'] as const).map(p => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                  period === p
+                    ? 'bg-[#2E78C8] text-white'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                }`}
+              >
+                {p === '12w' ? 'Últ. 12 sem.' : p === 'ytd' ? 'Este año' : 'Histórico'}
+              </button>
+            ))}
+            {availableYears.filter(y => y < currentYear).map(y => (
+              <button
+                key={y}
+                onClick={() => { setPeriod('year'); setSelectedYear(y) }}
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
+                  period === 'year' && selectedYear === y
+                    ? 'bg-[#2E78C8] text-white'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                }`}
+              >
+                {y}
+              </button>
+            ))}
+          </div>
+        </div>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -217,6 +250,7 @@ export default function DashboardPage() {
               tick={{ fontSize: 11, fill: '#9CA3AF' }}
               axisLine={false}
               tickLine={false}
+              tickFormatter={(val, idx) => chartData.length > 20 ? (idx % 4 === 0 ? val : '') : val}
             />
             <YAxis
               tick={{ fontSize: 11, fill: '#9CA3AF' }}
