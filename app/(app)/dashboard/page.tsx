@@ -39,8 +39,10 @@ function formatDate(dateStr: string) {
 }
 
 export default function DashboardPage() {
-  const [services, setServices] = useState<SundayService[]>([])
+  const [allServices, setAllServices] = useState<SundayService[]>([])
   const [loading, setLoading] = useState(true)
+  const [period, setPeriod] = useState<'12w' | 'ytd' | 'year' | 'all'>('12w')
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear())
 
   useEffect(() => {
     async function fetchData() {
@@ -88,9 +90,8 @@ export default function DashboardPage() {
           attendance_records: [r],
         }))
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-        .slice(0, 12)
 
-      setServices(transformed)
+      setAllServices(transformed)
       setLoading(false)
     }
     fetchData()
@@ -110,7 +111,7 @@ export default function DashboardPage() {
     )
   }
 
-  const servicesWithData = services.filter(s => s.attendance_records?.length > 0)
+  const servicesWithData = allServices.filter(s => s.attendance_records?.length > 0)
 
   if (servicesWithData.length === 0) {
     return (
@@ -139,7 +140,20 @@ export default function DashboardPage() {
   const maxTotal = Math.max(...allTotals)
   const maxService = servicesWithData.find(s => s.attendance_records[0]?.total_general === maxTotal)
 
-  const chartData = [...servicesWithData]
+  const currentYear = new Date().getFullYear()
+  const availableYears = [...new Set(
+    allServices.map(s => new Date(s.date + 'T00:00:00').getFullYear())
+  )].sort((a, b) => b - a)
+
+  const filteredServices = period === '12w'
+    ? servicesWithData.slice(0, 12)
+    : period === 'ytd'
+    ? servicesWithData.filter(s => new Date(s.date + 'T00:00:00').getFullYear() === currentYear)
+    : period === 'year'
+    ? servicesWithData.filter(s => new Date(s.date + 'T00:00:00').getFullYear() === selectedYear)
+    : servicesWithData
+
+  const chartData = [...filteredServices]
     .reverse()
     .map(s => ({
       fecha: formatDate(s.date),
