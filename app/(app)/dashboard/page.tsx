@@ -59,7 +59,7 @@ export default function DashboardPage() {
 
       if (error) {
         console.error('Dashboard query error:', error)
-        setServices([])
+        setAllServices([])
         setLoading(false)
         return
       }
