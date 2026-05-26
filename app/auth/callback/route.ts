@@ -31,10 +31,17 @@ export async function GET(request: Request) {
 
   if (code) {
     // Flujo PKCE (magic link login / reset password)
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
+      console.error('[callback] exchangeCodeForSession error:', {
+        message: error.message,
+        status: error.status,
+        code,
+        type,
+      })
       return NextResponse.redirect(new URL('/login?error=auth_error', requestUrl.origin))
     }
+    console.log('[callback] session ok, user:', data.session?.user?.email)
   } else if (token_hash && type) {
     // Flujo OTP / invite (token en query param)
     const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as EmailOtpType })
