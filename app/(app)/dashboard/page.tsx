@@ -38,6 +38,28 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString('es-GT', { month: 'short', day: 'numeric' })
 }
 
+function linearRegression(data: { total: number }[]): number[] | null {
+  const n = data.length
+  if (n < 2) return null
+  const xMean = (n - 1) / 2
+  const yMean = data.reduce((a, b) => a + b.total, 0) / n
+  const num = data.reduce((acc, d, i) => acc + (i - xMean) * (d.total - yMean), 0)
+  const den = data.reduce((acc, _, i) => acc + (i - xMean) ** 2, 0)
+  const m = den !== 0 ? num / den : 0
+  const b = yMean - m * xMean
+  return data.map((_, i) => Math.round(m * i + b))
+}
+
+function getTrendSlope(data: { total: number }[]): number {
+  const n = data.length
+  if (n < 2) return 0
+  const xMean = (n - 1) / 2
+  const yMean = data.reduce((a, b) => a + b.total, 0) / n
+  const num = data.reduce((acc, d, i) => acc + (i - xMean) * (d.total - yMean), 0)
+  const den = data.reduce((acc, _, i) => acc + (i - xMean) ** 2, 0)
+  return den !== 0 ? num / den : 0
+}
+
 export default function DashboardPage() {
   const [allServices, setAllServices] = useState<SundayService[]>([])
   const [loading, setLoading] = useState(true)
@@ -162,6 +184,17 @@ export default function DashboardPage() {
   const chartAvg = chartData.length > 0
     ? Math.round(chartData.reduce((a, b) => a + b.total, 0) / chartData.length)
     : 0
+  const trendValues = linearRegression(chartData)
+  const chartDataWithTrend = chartData.map((d, i) => ({
+    ...d,
+    tendencia: trendValues ? trendValues[i] : undefined,
+  }))
+  const slope = getTrendSlope(chartData)
+  const trendLabel = Math.abs(slope) < 1
+    ? { text: '→ Tendencia estable', color: 'bg-gray-100 text-gray-500' }
+    : slope > 0
+    ? { text: `↑ Al alza +${Math.round(slope)}/sem.`, color: 'bg-amber-50 text-amber-600' }
+    : { text: `↓ A la baja ${Math.round(slope)}/sem.`, color: 'bg-amber-50 text-amber-600' }
 
   const tableRows = servicesWithData.slice(0, 8)
 
@@ -215,12 +248,17 @@ export default function DashboardPage() {
 
       <div className="bg-white rounded-xl p-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm font-medium text-gray-700">
-            {period === '12w' ? 'Últimas 12 semanas'
-              : period === 'ytd' ? `Año en curso (${currentYear})`
-              : period === 'year' ? `${selectedYear}`
-              : 'Histórico completo'}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm font-medium text-gray-700">
+              {period === '12w' ? 'Últimas 12 semanas'
+                : period === 'ytd' ? `Año en curso (${currentYear})`
+                : period === 'year' ? `${selectedYear}`
+                : 'Histórico completo'}
+            </p>
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${trendLabel.color}`}>
+              {trendLabel.text}
+            </span>
+          </div>
           <div className="flex items-center gap-1 flex-wrap justify-end">
             {(['12w', 'ytd', 'all'] as const).map(p => (
               <button
@@ -251,14 +289,14 @@ export default function DashboardPage() {
           </div>
         </div>
         <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={chartData}>
+          <LineChart data={chartDataWithTrend}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis
               dataKey="fecha"
               tick={{ fontSize: 11, fill: '#9CA3AF' }}
               axisLine={false}
               tickLine={false}
-              tickFormatter={(val, idx) => chartData.length > 20 ? (idx % 4 === 0 ? val : '') : val}
+              tickFormatter={(val, idx) => chartDataWithTrend.length > 20 ? (idx % 4 === 0 ? val : '') : val}
             />
             <YAxis
               tick={{ fontSize: 11, fill: '#9CA3AF' }}
@@ -276,6 +314,16 @@ export default function DashboardPage() {
               strokeWidth={2}
               dot={{ fill: '#2E78C8', r: 3 }}
               activeDot={{ r: 5 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="tendencia"
+              stroke="#f59e0b"
+              strokeWidth={1.5}
+              strokeDasharray="6 3"
+              dot={false}
+              activeDot={false}
+              name="Tendencia"
             />
             <ReferenceLine
               y={chartAvg}
