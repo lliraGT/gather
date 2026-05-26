@@ -229,17 +229,25 @@ export default function DashboardPage() {
                 <th className="text-left px-5 py-3">Fecha</th>
                 <th className="text-right px-4 py-3">Presencial</th>
                 <th className="text-right px-4 py-3">Virtual</th>
+                <th className="text-right px-4 py-3">Var.</th>
                 <th className="text-right px-5 py-3 font-semibold">Total</th>
               </tr>
             </thead>
             <tbody>
-              {tableRows.map(s => {
+              {tableRows.map((s, i) => {
                 const rec = s.attendance_records[0]
+                const nextRec = tableRows[i + 1]?.attendance_records[0]
+                const variation = nextRec != null
+                  ? (rec?.total_general ?? 0) - (nextRec.total_general ?? 0)
+                  : null
+                const varColor = variation === null ? '' : variation > 0 ? 'text-green-600' : variation < 0 ? 'text-red-500' : 'text-gray-400'
+                const varLabel = variation === null ? '—' : variation > 0 ? `+${variation}` : variation < 0 ? `${variation}` : '='
                 return (
                   <tr key={s.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
                     <td className="px-5 py-3 text-gray-700">{formatDate(s.date)}</td>
                     <td className="px-4 py-3 text-right text-gray-600">{rec?.total_presencial ?? '—'}</td>
                     <td className="px-4 py-3 text-right text-gray-600">{rec?.total_virtual ?? '—'}</td>
+                    <td className={`px-4 py-3 text-right text-sm ${varColor}`}>{varLabel}</td>
                     <td className="px-5 py-3 text-right font-semibold text-gray-800">{rec?.total_general ?? '—'}</td>
                   </tr>
                 )
