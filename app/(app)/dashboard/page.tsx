@@ -287,6 +287,29 @@ export default function DashboardPage() {
         </ResponsiveContainer>
       </div>
 
+      <div className="bg-white rounded-xl p-5 shadow-sm">
+        <p className="text-sm font-medium text-gray-700 mb-4">Asistencia por grupo</p>
+        <ResponsiveContainer width="100%" height={240}>
+          <LineChart data={chartBreakdownData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis
+              dataKey="fecha"
+              tick={{ fontSize: 11, fill: '#9CA3AF' }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(val, idx) => chartBreakdownData.length > 20 ? (idx % 4 === 0 ? val : '') : val}
+            />
+            <YAxis tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} width={35} />
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #E5E7EB' }} />
+            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+            <Line type="monotone" dataKey="Salón Principal" stroke="#2E78C8" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Toldo" stroke="#10b981" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Salón L" stroke="#f59e0b" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Niños" stroke="#8b5cf6" strokeWidth={2} dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100">
           <p className="text-sm font-medium text-gray-700">Últimas 8 semanas</p>
@@ -324,28 +347,6 @@ export default function DashboardPage() {
             </tbody>
           </table>
         </div>
-      </div>
-      <div className="bg-white rounded-xl p-5 shadow-sm">
-        <p className="text-sm font-medium text-gray-700 mb-4">Asistencia por grupo</p>
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={chartBreakdownData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis
-              dataKey="fecha"
-              tick={{ fontSize: 11, fill: '#9CA3AF' }}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={(val, idx) => chartBreakdownData.length > 20 ? (idx % 4 === 0 ? val : '') : val}
-            />
-            <YAxis tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} width={35} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #E5E7EB' }} />
-            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-            <Line type="monotone" dataKey="Salón Principal" stroke="#2E78C8" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Toldo" stroke="#10b981" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Salón L" stroke="#f59e0b" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Niños" stroke="#8b5cf6" strokeWidth={2} dot={false} />
-          </LineChart>
-        </ResponsiveContainer>
       </div>
     </div>
   )
