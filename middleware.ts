@@ -2,6 +2,12 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // Si es un callback PKCE con ?code=, dejar pasar sin procesar sesión
+  const hasCode = request.nextUrl.searchParams.has('code')
+  if (hasCode) {
+    return NextResponse.next({ request })
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
