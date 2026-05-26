@@ -43,11 +43,18 @@ export async function GET(request: Request) {
     }
     console.log('[callback] session ok, user:', data.session?.user?.email)
   } else if (token_hash && type) {
-    // Flujo OTP / invite (token en query param)
-    const { error } = await supabase.auth.verifyOtp({ token_hash, type: type as EmailOtpType })
+    // Flujo OTP / invite / recovery server-side (token_hash en query param)
+    const { data, error } = await supabase.auth.verifyOtp({ token_hash, type: type as EmailOtpType })
     if (error) {
+      console.error('[callback] verifyOtp error:', {
+        message: error.message,
+        status: error.status,
+        token_hash,
+        type,
+      })
       return NextResponse.redirect(new URL('/login?error=auth_error', requestUrl.origin))
     }
+    console.log('[callback] verifyOtp ok, user:', data.session?.user?.email)
   } else if (token && type) {
     // Flujo recovery con ?token=pkce_... (Supabase PKCE moderno)
     const { error } = await supabase.auth.verifyOtp({
