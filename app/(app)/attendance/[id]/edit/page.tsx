@@ -142,10 +142,10 @@ export default function AttendanceEditPage() {
       <h1 className="text-xl font-semibold text-gray-800 mb-6">Editar asistencia</h1>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex gap-5 items-start">
+        <div className="flex gap-5 items-stretch">
 
           {/* PANEL IZQUIERDO — sticky */}
-          <div className="w-56 flex-shrink-0 sticky top-6 flex flex-col gap-4">
+          <div className="w-56 flex-shrink-0 flex flex-col gap-4">
 
             {/* Fecha y notas */}
             <div className="bg-white rounded-xl p-4 shadow-sm space-y-3">
@@ -172,7 +172,7 @@ export default function AttendanceEditPage() {
             </div>
 
             {/* Totales */}
-            <div className="bg-[#1E3A5F] rounded-xl p-4 text-white">
+            <div className="bg-[#1E3A5F] rounded-xl p-4 text-white flex flex-col flex-1">
               <p className="text-xs text-white/60 mb-3 uppercase tracking-wide">Resumen</p>
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
@@ -191,7 +191,7 @@ export default function AttendanceEditPage() {
 
               {error && <p className="text-red-300 text-xs mb-3">{error}</p>}
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mt-auto">
                 <button
                   type="submit"
                   disabled={saving}
