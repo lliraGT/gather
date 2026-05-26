@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Legend
 } from 'recharts'
 
 interface AttendanceRecord {
@@ -165,6 +165,14 @@ export default function DashboardPage() {
 
   const tableRows = servicesWithData.slice(0, 8)
 
+  const chartBreakdownData = [...filteredServices].reverse().map(s => ({
+    fecha: formatDate(s.date),
+    'Salón Principal': s.attendance_records[0]?.salon_principal ?? 0,
+    'Toldo': s.attendance_records[0]?.toldo ?? 0,
+    'Salón L': s.attendance_records[0]?.salon_l ?? 0,
+    'Niños': s.attendance_records[0]?.ninos ?? 0,
+  }))
+
   return (
     <div className="pt-2 space-y-6">
       <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
@@ -316,6 +324,28 @@ export default function DashboardPage() {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="bg-white rounded-xl p-5 shadow-sm">
+        <p className="text-sm font-medium text-gray-700 mb-4">Asistencia por grupo</p>
+        <ResponsiveContainer width="100%" height={240}>
+          <LineChart data={chartBreakdownData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis
+              dataKey="fecha"
+              tick={{ fontSize: 11, fill: '#9CA3AF' }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(val, idx) => chartBreakdownData.length > 20 ? (idx % 4 === 0 ? val : '') : val}
+            />
+            <YAxis tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} width={35} />
+            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #E5E7EB' }} />
+            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+            <Line type="monotone" dataKey="Salón Principal" stroke="#2E78C8" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Toldo" stroke="#10b981" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Salón L" stroke="#f59e0b" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Niños" stroke="#8b5cf6" strokeWidth={2} dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   )
