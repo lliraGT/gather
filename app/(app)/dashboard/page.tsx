@@ -197,10 +197,8 @@ export default function DashboardPage() {
 
   const chartBreakdownData = [...filteredServices].reverse().map(s => ({
     fecha: formatDate(s.date),
-    'Salón Principal': s.attendance_records[0]?.salon_principal ?? 0,
-    'Toldo': s.attendance_records[0]?.toldo ?? 0,
-    'Salón L': s.attendance_records[0]?.salon_l ?? 0,
-    'Niños': s.attendance_records[0]?.ninos ?? 0,
+    'Presencial': s.attendance_records[0]?.total_presencial ?? 0,
+    'Virtual': s.attendance_records[0]?.total_virtual ?? 0,
   }))
 
   return (
@@ -341,10 +339,8 @@ export default function DashboardPage() {
             <YAxis tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} width={35} />
             <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #E5E7EB' }} />
             <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-            <Line type="monotone" dataKey="Salón Principal" stroke="#2E78C8" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Toldo" stroke="#10b981" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Salón L" stroke="#f59e0b" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Niños" stroke="#8b5cf6" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Presencial" stroke="#2E78C8" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="Virtual"    stroke="#10b981" strokeWidth={2} dot={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
