@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-10T00:00:00Z",
+  "title": "Design System: Gather",
+  "extensions": {
+    "colorMeta": {
+      "navy-deep": {
+        "role": "primary",
+        "displayName": "Azul Nocturno",
+        "canonical": "#1E3A5F",
+        "tonalRamp": ["#0a1826", "#122335", "#1E3A5F", "#2a4f7a", "#3d6898", "#6a92b8", "#a8c4dc", "#d8eaf5"]
+      },
+      "blue-active": {
+        "role": "primary",
+        "displayName": "Azul Fiel",
+        "canonical": "#2E78C8",
+        "tonalRamp": ["#0d2d4f", "#154273", "#1e5898", "#2E78C8", "#5997d8", "#8ab5e6", "#b8d4f0", "#e6f0fa"]
+      },
+      "blue-light": {
+        "role": "secondary",
+        "displayName": "Azul Claro",
+        "canonical": "#7BB3E8",
+        "tonalRamp": ["#1e3a5f", "#2a5080", "#3d6898", "#5a86b8", "#7BB3E8", "#9ec8f0", "#c0d9f5", "#e4f0fb"]
+      },
+      "blue-border": {
+        "role": "neutral",
+        "displayName": "Neblina",
+        "canonical": "#D8E8F5",
+        "tonalRamp": ["#6a92b8", "#8aaecc", "#a8c4dc", "#bdd3ea", "#cce0f2", "#D8E8F5", "#e8f2fa", "#f4f9fd"]
+      },
+      "blue-surface": {
+        "role": "neutral",
+        "displayName": "Cielo Pálido",
+        "canonical": "#E6F0FA",
+        "tonalRamp": ["#7bb3e8", "#9ec8f0", "#b8d4f0", "#cce0f5", "#d8eaf8", "#E6F0FA", "#f0f6fc", "#f8fbfe"]
+      },
+      "navy-mid": {
+        "role": "neutral",
+        "displayName": "Penumbra",
+        "canonical": "#3D5878",
+        "tonalRamp": ["#181f28", "#252e3a", "#3D5878", "#506a8a", "#6a889f", "#8faabb", "#b8cbd8", "#dce9f0"]
+      },
+      "blue-muted": {
+        "role": "neutral",
+        "displayName": "Gris Azulado",
+        "canonical": "#7A95B0",
+        "tonalRamp": ["#2a3d50", "#3d5570", "#5a738a", "#7A95B0", "#9ab4c8", "#bad0e0", "#d5e4ee", "#edf4f9"]
+      },
+      "page-bg": {
+        "role": "neutral",
+        "displayName": "Fondo",
+        "canonical": "#F8F9FA",
+        "tonalRamp": ["#bfc4ca", "#cdd2d8", "#d8dde2", "#e2e6eb", "#eceff2", "#F8F9FA", "#fafbfc", "#ffffff"]
+      },
+      "card-bg": {
+        "role": "neutral",
+        "displayName": "Superficie",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#d0d5da", "#dde1e5", "#e8ecf0", "#f0f3f5", "#f5f7f9", "#F8F9FA", "#fafbfc", "#FFFFFF"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#1B1B1B",
+        "tonalRamp": ["#0a0a0a", "#1B1B1B", "#2d2d2d", "#4a4a4a", "#6b6b6b", "#8a8a8a", "#b0b0b0", "#d8d8d8"]
+      },
+      "amber": {
+        "role": "tertiary",
+        "displayName": "Ámbar Tendencia",
+        "canonical": "#F59E0B",
+        "tonalRamp": ["#5a3800", "#8a5800", "#b87800", "#d48f00", "#F59E0B", "#f8b83a", "#fbd073", "#fdedc8"]
+      },
+      "positive": {
+        "role": "tertiary",
+        "displayName": "Delta Positivo",
+        "canonical": "#16A34A",
+        "tonalRamp": ["#052a14", "#0b4a24", "#0d6630", "#10843c", "#16A34A", "#22c55e", "#86efac", "#dcfce7"]
+      },
+      "negative": {
+        "role": "tertiary",
+        "displayName": "Delta Negativo",
+        "canonical": "#DC2626",
+        "tonalRamp": ["#450a0a", "#7a1212", "#a61616", "#c41e1e", "#DC2626", "#ef4444", "#fca5a5", "#fee2e2"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "KPI numbers — the single most important value on a data card." },
+      "headline": { "displayName": "Headline", "purpose": "Page titles. One per view." },
+      "title": { "displayName": "Title", "purpose": "Card section headers, sidebar username." },
+      "body": { "displayName": "Body", "purpose": "Table content, form values, descriptions. Max 65–75ch." },
+      "label": { "displayName": "Label", "purpose": "Field labels, nav section headers (uppercase with tracking), metadata." }
+    },
+    "shadows": [
+      {
+        "name": "elevation-min",
+        "value": "0 1px 2px rgb(0 0 0 / 0.05)",
+        "purpose": "The only shadow in the system. Signals 'I am a surface above the page background.' Cards, login panel."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-colors",
+        "value": "transition-colors 150ms ease",
+        "purpose": "Default for color state transitions: button hover, nav item active. No layout properties."
+      }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px", "purpose": "Sidebar visible / bottom nav hidden. Main layout breakpoint." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action button. Blue-active background, transitions to navy-deep on hover.",
+      "html": "<button class=\"ds-btn-primary\">Guardar</button>",
+      "css": ".ds-btn-primary { background: #2E78C8; color: #ffffff; padding: 10px 16px; font-size: 14px; font-weight: 500; border: none; border-radius: 8px; cursor: pointer; transition: background-color 150ms ease; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; } .ds-btn-primary:hover { background: #1E3A5F; } .ds-btn-primary:focus-visible { outline: 2px solid #2E78C8; outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Primary Button (On Dark)",
+      "kind": "button",
+      "refersTo": "button-on-dark",
+      "description": "Primary action button inside the navy summary panel. Inverted: white background, navy text.",
+      "html": "<div style=\"background:#1E3A5F;padding:16px;border-radius:12px;\"><button class=\"ds-btn-on-dark\">Guardar</button></div>",
+      "css": ".ds-btn-on-dark { background: #ffffff; color: #1E3A5F; padding: 8px 16px; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; width: 100%; transition: background-color 150ms ease; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; } .ds-btn-on-dark:hover { background: rgba(255,255,255,0.9); } .ds-btn-on-dark:focus-visible { outline: 2px solid rgba(255,255,255,0.8); outline-offset: 2px; } .ds-btn-on-dark:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Ghost Button (On Dark)",
+      "kind": "button",
+      "refersTo": "button-ghost-dark",
+      "description": "Secondary action inside the navy summary panel. Transparent with white border.",
+      "html": "<div style=\"background:#1E3A5F;padding:16px;border-radius:12px;\"><button class=\"ds-btn-ghost-dark\">Cancelar</button></div>",
+      "css": ".ds-btn-ghost-dark { background: transparent; color: rgba(255,255,255,0.8); padding: 8px 16px; font-size: 14px; font-weight: 400; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer; width: 100%; transition: background-color 150ms ease; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; } .ds-btn-ghost-dark:hover { background: rgba(255,255,255,0.1); } .ds-btn-ghost-dark:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Data Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Primary data surface. White, rounded, barely-visible shadow. Contains KPI numbers or charts.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-label\">Último domingo</p><p class=\"ds-card-kpi\">342</p><span class=\"ds-badge-positive\">↑ +18 vs sem. ant.</span><p class=\"ds-card-sublabel\">total general</p></div>",
+      "css": ".ds-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; min-width: 180px; } .ds-card-label { font-size: 12px; color: #9CA3AF; margin: 0 0 4px 0; } .ds-card-kpi { font-size: 2.25rem; font-weight: 700; color: #1E3A5F; line-height: 1.1; letter-spacing: -0.01em; margin: 0 0 8px 0; } .ds-card-sublabel { font-size: 12px; color: #9CA3AF; margin: 4px 0 0 0; } .ds-badge-positive { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; background: #F0FDF4; color: #15803D; font-size: 12px; font-weight: 600; }"
+    },
+    {
+      "name": "Summary Panel",
+      "kind": "card",
+      "refersTo": "summary-panel",
+      "description": "The signature component. Navy background, white text. Shows live totals during attendance registration.",
+      "html": "<div class=\"ds-summary-panel\"><p class=\"ds-summary-eyebrow\">RESUMEN</p><div class=\"ds-summary-row\"><span class=\"ds-summary-label\">Presencial</span><span class=\"ds-summary-value\">287</span></div><div class=\"ds-summary-row\"><span class=\"ds-summary-label\">Virtual</span><span class=\"ds-summary-value\">55</span></div><div class=\"ds-summary-divider\"></div><div class=\"ds-summary-total-row\"><span class=\"ds-summary-label\">Total</span><span class=\"ds-summary-total\">342</span></div></div>",
+      "css": ".ds-summary-panel { background: #1E3A5F; border-radius: 12px; padding: 16px; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; color: #ffffff; min-width: 180px; } .ds-summary-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin: 0 0 12px 0; } .ds-summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; } .ds-summary-label { font-size: 14px; color: rgba(255,255,255,0.7); } .ds-summary-value { font-size: 14px; font-weight: 500; color: #ffffff; } .ds-summary-divider { border-top: 1px solid rgba(255,255,255,0.2); margin: 8px 0; } .ds-summary-total-row { display: flex; justify-content: space-between; align-items: baseline; } .ds-summary-total { font-size: 1.5rem; font-weight: 700; color: #ffffff; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard form input. Gray border at rest, Azul Fiel focus ring.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-label\">Salón Principal</label><input class=\"ds-input\" type=\"number\" value=\"145\" /></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 4px; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; } .ds-label { font-size: 12px; font-weight: 500; color: #6B7280; } .ds-input { border: 1px solid #E5E7EB; border-radius: 8px; padding: 10px 16px; font-size: 14px; color: #1B1B1B; background: #ffffff; outline: none; transition: box-shadow 150ms ease; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; width: 100%; box-sizing: border-box; } .ds-input:focus { box-shadow: 0 0 0 2px #2E78C8; border-color: #2E78C8; } .ds-input::placeholder { color: #9CA3AF; }"
+    },
+    {
+      "name": "Delta Badge",
+      "kind": "chip",
+      "refersTo": "card",
+      "description": "Pill badge for attendance variation. Three states: positive, negative, neutral.",
+      "html": "<div style=\"display:flex;gap:8px;align-items:center;\"><span class=\"ds-badge-positive\">↑ +18 vs sem. ant.</span><span class=\"ds-badge-negative\">↓ -12 vs sem. ant.</span><span class=\"ds-badge-neutral\">→ Sin cambio</span></div>",
+      "css": ".ds-badge-positive, .ds-badge-negative, .ds-badge-neutral { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; white-space: nowrap; } .ds-badge-positive { background: #F0FDF4; color: #15803D; } .ds-badge-negative { background: #FEF2F2; color: #DC2626; } .ds-badge-neutral { background: #F3F4F6; color: #6B7280; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "El Libro de Asistencias",
+    "overview": "Gather se diseña como un libro de registro ministerial digitalizado: preciso, sin ornamentos, con el peso específico de lo que registra. Cada número en pantalla representa una persona que decidió estar presente; la interfaz honra ese hecho siendo fiel y discreta, nunca decorativa.\n\nLa paleta orbita un azul profundo que no pertenece al manual corporativo ni al SaaS genérico. Es el Azul Nocturno del cielo de Guatemala justo antes del alba: serio, tranquilo, presente. Las superficies son blancas o casi blancas porque el protagonismo lo tienen los datos, no el fondo. Un insight del sistema: la escala tonal del azul primario contiene todos los colores de borde, superficie y muted del sistema. La coherencia no es un accidente.\n\nEl sistema rechaza cuatro trampas: el kitsch religioso, el SaaS genérico, el dashboard-terminal, y la rigidez bancaria.",
+    "keyCharacteristics": [
+      "Azul Nocturno profundo como ancla de identidad — no navy corporativo, no azul de startup",
+      "Superficies blancas con sombra mínima; la profundidad surge del contraste de color, no de elevación",
+      "Tipografía sans-serif neutral — la herramienta no debe llamar atención sobre sí misma",
+      "Responsive real: móvil y laptop como ciudadanos de primera clase",
+      "Panel de resumen navy (fondo #1E3A5F) como componente firma: la inversión del sistema"
+    ],
+    "rules": [
+      {
+        "name": "The Two-Blue Rule",
+        "body": "Azul Nocturno (#1E3A5F) es identidad y presencia; Azul Fiel (#2E78C8) es acción y datos. Nunca intercambiarlos.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Warm Rule",
+        "body": "El ámbar (#F59E0B) existe solo como señal de tendencia temporal. Prohibido en fondos de sección, decoración, o estados de éxito.",
+        "section": "colors"
+      },
+      {
+        "name": "The Delta-Only Rule",
+        "body": "Verde (#16A34A) y rojo (#DC2626) son exclusivos de variaciones de asistencia. Prohibido para estados de UI o categorías de contenido.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Tight-Uppercase Rule",
+        "body": "Texto en uppercase sin letter-spacing mínimo de 0.05em está prohibido. Todo uppercase va con tracking declarado.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Las superficies están planas en reposo. La única sombra permitida es 0 1px 2px rgb(0 0 0 / 0.05). Sin shadow-md ni superior.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do usar Azul Fiel (#2E78C8) para botones primarios, estados activos, líneas de datos y focus rings.",
+      "Do reservar Azul Nocturno (#1E3A5F) para identidad, presencia, y el panel de resumen.",
+      "Do usar sombra mínima (0 1px 2px rgb(0 0 0 / 0.05)) en tarjetas — solo para señalar 'soy una superficie'.",
+      "Do aplicar letter-spacing explícito a todo texto en uppercase — mínimo 0.05em.",
+      "Do verificar que el texto placeholder cumpla contraste 4.5:1.",
+      "Do usar el ámbar exclusivamente para líneas de tendencia temporal en gráficos.",
+      "Do diseñar con tap targets ≥44px y inputs con font-size ≥16px en móvil."
+    ],
+    "donts": [
+      "Don't usar palomas, cruces decorativas, gradientes dorados, o fuentes serif cursivas.",
+      "Don't usar el template 'big number + badge + supporting stats' en grid de tarjetas idénticas.",
+      "Don't usar dark mode ni fondos oscuros tipo terminal.",
+      "Don't producir rigidez bancaria: navy-y-gris sin calor, sin alma.",
+      "Don't usar border-left mayor a 1px como stripe de color en tarjetas o alertas.",
+      "Don't usar gradient text (background-clip: text con gradiente).",
+      "Don't usar shadow-md o superior en tarjetas en reposo.",
+      "Don't intercambiar el rol de Azul Nocturno y Azul Fiel.",
+      "Don't usar verde o rojo para estados de formulario ni categorías de contenido."
+    ]
+  }
+}
