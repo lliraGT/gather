@@ -5,6 +5,17 @@
 :root {
   --background: #F8F9FA;
   --foreground: #1B1B1B;
+  --accent: #0D518C;
+  --accent-deep: #083f73;
+  --navy: #1E3A5F;
+  --ink: #141c30;
+  --muted: #71798a;
+  --line: #dfe3ea;
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --green: #16a34a;
+  --red: #DC2626;
+  --amber: #b45309;
 }
 
 body {
