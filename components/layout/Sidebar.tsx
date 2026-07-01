@@ -46,16 +46,16 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-[200px] bg-white border-r border-[#D8E8F5] flex flex-col z-10">
-      {/* Header */}
-      <div className="flex items-center gap-2 px-4 py-5">
-        <GatherLogo size={26} />
-        <span className="text-[16px] font-medium text-[#1E3A5F] tracking-[0.05em]">GATHER</span>
+    <aside className="w-[220px] flex-shrink-0 sticky top-0 h-screen bg-white border-r border-[#dfe3ea] flex flex-col">
+      {/* Brand */}
+      <div className="flex items-center gap-2 px-5 py-[22px] border-b border-[#dfe3ea]">
+        <GatherLogo size={27} />
+        <span className="text-[15px] font-extrabold text-[#1E3A5F] tracking-[-0.01em]">GATHER</span>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-0 overflow-y-auto">
-        {sections.map((section, sectionIndex) => {
+      <nav className="flex-1 px-[10px] py-4 flex flex-col gap-[18px] overflow-y-auto">
+        {sections.map(section => {
           const visibleItems = section.items.filter(
             item => !profile || item.roles.includes(profile.role)
           )
@@ -63,32 +63,31 @@ export function Sidebar() {
 
           return (
             <div key={section.label}>
-              {sectionIndex > 0 && (
-                <hr className="border-[#D8E8F5] mx-[10px] my-[5px]" />
-              )}
-              <p className="text-[10px] font-medium tracking-[0.08em] uppercase text-[#7A95B0] px-[10px] pt-2 pb-1">
+              <p className="px-[10px] pb-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#b0b8c8]">
                 {section.label}
               </p>
-              {visibleItems.map(item => {
-                const isActive = pathname === item.href
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center gap-2 px-[10px] py-[7px] rounded-lg text-[13px] transition-colors mx-1 ${
-                      isActive
-                        ? 'bg-[#E6F0FA] text-[#1E3A5F] font-medium'
-                        : 'text-[#3D5878] hover:bg-[#E6F0FA] hover:text-[#1E3A5F]'
-                    }`}
-                  >
-                    <i
-                      className={`ti ${item.icon} text-[16px] ${isActive ? 'text-[#2E78C8]' : ''}`}
-                      aria-hidden="true"
-                    />
-                    {item.label}
-                  </Link>
-                )
-              })}
+              <div className="flex flex-col">
+                {visibleItems.map(item => {
+                  const isActive = pathname === item.href
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-[9px] px-[10px] py-[8.5px] rounded-[9px] text-[13.5px] transition-colors ${
+                        isActive
+                          ? 'bg-[#e8f0fb] text-[#0D518C] font-semibold'
+                          : 'text-[#4a5568] font-medium hover:bg-[#f0f4fa] hover:text-[#0D518C]'
+                      }`}
+                    >
+                      <i
+                        className={`ti ${item.icon} text-[15px] ${isActive ? 'opacity-100' : 'opacity-65'}`}
+                        aria-hidden="true"
+                      />
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
           )
         })}
@@ -96,25 +95,25 @@ export function Sidebar() {
 
       {/* Footer */}
       {profile && (
-        <div className="border-t border-[#D8E8F5] px-3 py-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-[#E6F0FA] text-[#1E3A5F] text-[11px] font-medium flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center justify-between px-[18px] py-[14px] border-t border-[#dfe3ea]">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-[30px] h-[30px] rounded-full bg-[#1E3A5F] text-white text-[11px] font-bold flex items-center justify-center flex-shrink-0">
               {getInitials(profile.full_name, profile.email)}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-medium text-[#1E3A5F] truncate">
+            <div className="min-w-0">
+              <p className="text-[13px] font-semibold text-[#141c30] truncate">
                 {profile.full_name ?? profile.email}
               </p>
-              <p className="text-[11px] text-[#7A95B0]">{profile.role}</p>
+              <p className="text-[11px] text-[#71798a]">{profile.role}</p>
             </div>
-            <button
-              onClick={handleSignOut}
-              className="text-[11px] text-[#7A95B0] hover:text-[#3D5878] transition-colors"
-              title="Cerrar sesión"
-            >
-              <i className="ti ti-logout text-[14px]" aria-hidden="true" />
-            </button>
           </div>
+          <button
+            onClick={handleSignOut}
+            className="text-[#71798a] hover:text-[#0D518C] transition-colors flex-shrink-0"
+            title="Cerrar sesión"
+          >
+            <i className="ti ti-logout text-[14px]" aria-hidden="true" />
+          </button>
         </div>
       )}
     </aside>

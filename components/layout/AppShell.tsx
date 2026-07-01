@@ -4,12 +4,12 @@ import { BottomNav } from '@/components/layout/BottomNav'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
-      <div className="hidden md:block">
+    <div className="flex h-screen">
+      <div className="hidden md:flex">
         <Sidebar />
       </div>
-      <main className="md:ml-[200px] min-h-screen">
-        <div className="pt-0 md:pt-6 pb-16 md:pb-0 px-4 md:px-6">
+      <main className="flex-1 overflow-y-auto bg-[#f4f6fb]">
+        <div className="px-4 pt-0 pb-16 md:px-[36px] md:pt-[32px] md:pb-[48px]">
           {children}
         </div>
       </main>
