@@ -232,45 +232,126 @@ export default function DashboardPage() {
     'Virtual': s.attendance_records[0]?.total_virtual ?? 0,
   }))
 
+  // Sparkline fantasma del hero card — decorativa, hasta 12 puntos tomados de chartData
+  const sparkTotals = chartData.slice(-12).map(d => d.total)
+  const sparkMax = Math.max(...sparkTotals)
+  const sparkMin = Math.min(...sparkTotals)
+  const sparkPoints = sparkTotals.length >= 2
+    ? sparkTotals
+        .map((t, i) => {
+          const x = (i / (sparkTotals.length - 1)) * 420
+          const y = sparkMax === sparkMin
+            ? 40
+            : 2 + (78 - 2) * ((sparkMax - t) / (sparkMax - sparkMin))
+          return `${x},${y}`
+        })
+        .join(' ')
+    : null
+
   return (
     <div className="pt-2 space-y-6">
       <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {/* KPI principal — domina 2/3 del grid */}
-        <div className="sm:col-span-2 bg-white rounded-xl p-5 shadow-sm border-t-2 border-[#1E3A5F]">
-          <p className="text-xs font-medium text-gray-500 mb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_210px] gap-[14px] mb-[14px]">
+        {/* Hero card — Último domingo */}
+        <div
+          className="relative overflow-hidden rounded-[14px] py-7 px-8"
+          style={{ backgroundImage: 'linear-gradient(130deg, #0D518C 0%, #1a6cb0 100%)' }}
+        >
+          {/* Decoración circular sutil */}
+          <div
+            className="pointer-events-none absolute rounded-full"
+            style={{
+              right: '-50px',
+              top: '-50px',
+              width: '220px',
+              height: '220px',
+              background: 'radial-gradient(circle, rgba(255,255,255,.12), transparent 70%)',
+            }}
+          />
+          {/* Sparkline fantasma — decorativa, no interactiva */}
+          {sparkPoints && (
+            <svg
+              className="pointer-events-none absolute"
+              style={{ right: '28px', bottom: '20px', opacity: 0.22 }}
+              width={160}
+              viewBox="0 0 420 80"
+              preserveAspectRatio="none"
+            >
+              <polyline
+                points={sparkPoints}
+                fill="none"
+                stroke="#fff"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+          <p style={{ fontSize: '12px', fontWeight: 600, color: 'rgba(255,255,255,.7)', marginBottom: '10px' }}>
             Último domingo{servicesWithData[0]?.date ? ` · ${formatDate(servicesWithData[0].date)}` : ''}
           </p>
-          <p className="text-5xl font-bold text-[#1E3A5F] leading-none">
+          <p style={{ fontSize: '58px', fontWeight: 800, letterSpacing: '-0.05em', color: '#fff', lineHeight: 1 }}>
             {latest?.total_general ?? '—'}
           </p>
           {lastDiff !== null && (
-            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold mt-3 ${lastDiff > 0 ? 'bg-green-50 text-green-700' : lastDiff < 0 ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-500'}`}>
+            <span
+              className="inline-flex items-center whitespace-nowrap"
+              style={{
+                gap: '5px',
+                marginTop: '12px',
+                padding: '4px 10px',
+                borderRadius: '20px',
+                fontSize: '12px',
+                fontWeight: 600,
+                background: lastDiff > 0
+                  ? 'rgba(74,222,128,.22)'
+                  : lastDiff < 0
+                  ? 'rgba(239,68,68,.28)'
+                  : 'rgba(255,255,255,.18)',
+                color: lastDiff > 0
+                  ? '#86efac'
+                  : lastDiff < 0
+                  ? '#fecaca'
+                  : 'rgba(255,255,255,.85)',
+              }}
+            >
               {lastDiff > 0 ? `↑ +${lastDiff} vs sem. ant.` : lastDiff < 0 ? `↓ ${Math.abs(lastDiff)} vs sem. ant.` : '→ Sin cambio'}
             </span>
           )}
         </div>
 
-        {/* KPIs de contexto — apilados en 1/3 */}
-        <div className="flex flex-col gap-4">
-          <div className="bg-white rounded-xl p-4 shadow-sm flex-1">
-            <p className="text-xs font-medium text-gray-500 mb-1">Promedio 4 sem.</p>
-            <p className="text-2xl font-semibold text-gray-700">{avg4}</p>
-            {avgDiff !== null && (
-              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold mt-2 ${avgDiff > 0 ? 'bg-green-50 text-green-700' : avgDiff < 0 ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-500'}`}>
-                {avgDiff > 0 ? `↑ +${avgDiff}` : avgDiff < 0 ? `↓ ${Math.abs(avgDiff)}` : '→'}
-              </span>
-            )}
-            {avgPrev !== null && servicesWithData.length >= 5 && (
-              <p className="text-xs text-gray-500 mt-1">Prom. ant.: {avgPrev}</p>
-            )}
+        {/* Stats column */}
+        <div className="flex flex-col gap-3">
+          <div className="rounded-[14px] border border-[#dfe3ea] bg-white px-5 py-[18px]">
+            <p style={{ fontSize: '10.5px', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', color: '#71798a', marginBottom: '6px' }}>
+              Promedio 4 sem.
+            </p>
+            <p style={{ fontSize: '30px', fontWeight: 800, letterSpacing: '-0.04em', color: '#141c30', lineHeight: 1 }}>
+              {avg4}
+            </p>
+            <div className="flex items-center" style={{ gap: '5px', marginTop: '5px', fontSize: '11.5px', color: '#71798a' }}>
+              {avgDiff !== null && (
+                <span style={{ fontWeight: 600, color: avgDiff > 0 ? '#16a34a' : avgDiff < 0 ? '#DC2626' : '#71798a' }}>
+                  {avgDiff > 0 ? `↑ +${avgDiff}` : avgDiff < 0 ? `↓ ${Math.abs(avgDiff)}` : '→'}
+                </span>
+              )}
+              {avgPrev !== null && servicesWithData.length >= 5 && (
+                <span>Prom. ant.: {avgPrev}</span>
+              )}
+            </div>
           </div>
-          <div className="bg-white rounded-xl p-4 shadow-sm flex-1">
-            <p className="text-xs font-medium text-gray-500 mb-1">Récord histórico</p>
-            <p className="text-2xl font-semibold text-gray-700">{maxTotal}</p>
+          <div className="rounded-[14px] border border-[#dfe3ea] bg-white px-5 py-[18px]">
+            <p style={{ fontSize: '10.5px', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', color: '#71798a', marginBottom: '6px' }}>
+              Récord histórico
+            </p>
+            <p style={{ fontSize: '30px', fontWeight: 800, letterSpacing: '-0.04em', color: '#141c30', lineHeight: 1 }}>
+              {maxTotal}
+            </p>
             {maxService && (
-              <p className="text-xs text-gray-500 mt-1">{formatDate(maxService.date)}</p>
+              <div className="flex items-center" style={{ gap: '5px', marginTop: '5px', fontSize: '11.5px', color: '#71798a' }}>
+                {formatDate(maxService.date)}
+              </div>
             )}
           </div>
         </div>
