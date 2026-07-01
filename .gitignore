@@ -37,3 +37,6 @@ next-env.d.ts
 
 .vercel
 supabase/.temp/
+
+# subagent-driven-development scratch
+.superpowers/
