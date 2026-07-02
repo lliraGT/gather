@@ -4,12 +4,11 @@ interface FieldCardProps {
   label: string
   value: number
   onChange: (value: string) => void
-  compact?: boolean
 }
 
-export function FieldCard({ label, value, onChange, compact }: FieldCardProps) {
-  const btnClass = compact ? 'w-11 h-11' : 'w-[34px] h-[34px]'
+const BTN_CLASS = 'w-11 h-11 md:w-[34px] md:h-[34px]'
 
+export function FieldCard({ label, value, onChange }: FieldCardProps) {
   function dec() {
     onChange(String(Math.max(0, value - 1)))
   }
@@ -34,7 +33,7 @@ export function FieldCard({ label, value, onChange, compact }: FieldCardProps) {
           type="button"
           onClick={dec}
           aria-label={`Restar a ${label}`}
-          className={`${btnClass} flex-shrink-0 rounded-lg border border-[#dfe3ea] bg-[#f4f6fb] text-lg font-bold text-[#71798a] grid place-items-center transition-colors hover:bg-[#e8f0fb] hover:text-[#0D518C] hover:border-[#bdd4f0]`}
+          className={`${BTN_CLASS} flex-shrink-0 rounded-lg border border-[#dfe3ea] bg-[#f4f6fb] text-lg font-bold text-[#71798a] grid place-items-center transition-colors hover:bg-[#e8f0fb] hover:text-[#0D518C] hover:border-[#bdd4f0]`}
         >
           &minus;
         </button>
@@ -53,7 +52,7 @@ export function FieldCard({ label, value, onChange, compact }: FieldCardProps) {
           type="button"
           onClick={inc}
           aria-label={`Sumar a ${label}`}
-          className={`${btnClass} flex-shrink-0 rounded-lg border border-[#dfe3ea] bg-[#f4f6fb] text-lg font-bold text-[#71798a] grid place-items-center transition-colors hover:bg-[#0D518C] hover:text-white hover:border-[#0D518C]`}
+          className={`${BTN_CLASS} flex-shrink-0 rounded-lg border border-[#dfe3ea] bg-[#f4f6fb] text-lg font-bold text-[#71798a] grid place-items-center transition-colors hover:bg-[#0D518C] hover:text-white hover:border-[#0D518C]`}
         >
           +
         </button>
