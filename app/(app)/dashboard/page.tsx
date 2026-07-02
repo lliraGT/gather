@@ -250,8 +250,6 @@ export default function DashboardPage() {
 
   return (
     <div className="pt-2">
-      <h1 className="text-xl font-semibold text-gray-800 mb-6">Dashboard</h1>
-
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_210px] gap-[14px] mb-[14px]">
         {/* Hero card — Último domingo */}
         <div
