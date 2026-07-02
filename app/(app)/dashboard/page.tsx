@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
 
 interface AttendanceRecord {
@@ -497,25 +497,67 @@ export default function DashboardPage() {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-white rounded-xl p-5 shadow-sm">
-        <p className="text-sm font-medium text-gray-700 mb-4">Presencial vs. Virtual</p>
+      <div
+        className="rounded-[14px] border border-[#dfe3ea] bg-white"
+        style={{ padding: '22px 26px 20px', marginBottom: '14px' }}
+      >
+        <p style={{ fontSize: '14px', fontWeight: 700, color: '#141c30', margin: 0 }}>
+          Presencial vs. Virtual
+        </p>
         <ResponsiveContainer width="100%" height={240}>
           <LineChart data={chartBreakdownData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <CartesianGrid horizontal vertical={false} stroke="#f0f3f8" />
             <XAxis
               dataKey="fecha"
-              tick={{ fontSize: 11, fill: '#6B7280' }}
+              tick={{ fontSize: 11, fill: '#71798a' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(val, idx) => chartBreakdownData.length > 20 ? (idx % 4 === 0 ? val : '') : val}
             />
-            <YAxis tick={{ fontSize: 11, fill: '#6B7280' }} axisLine={false} tickLine={false} width={35} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #E5E7EB' }} />
-            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-            <Line type="monotone" dataKey="Presencial" stroke="#2E78C8" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="Virtual"    stroke="#3D5878" strokeWidth={2} dot={false} />
+            <YAxis
+              tick={{ fontSize: 11, fill: '#71798a' }}
+              axisLine={false}
+              tickLine={false}
+              width={35}
+            />
+            <Tooltip
+              contentStyle={{ background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, padding: '10px' }}
+              itemStyle={{ color: '#fff' }}
+              labelStyle={{ color: '#fff' }}
+            />
+            <Line
+              type="monotone"
+              dataKey="Presencial"
+              stroke="#2E78C8"
+              strokeWidth={2.5}
+              dot={{ fill: '#2E78C8', stroke: '#fff', strokeWidth: 1.5, r: 4 }}
+              activeDot={{ r: 6 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="Virtual"
+              stroke="#93c5fd"
+              strokeWidth={2}
+              dot={false}
+            />
           </LineChart>
         </ResponsiveContainer>
+        <div className="flex items-center" style={{ gap: '18px', marginTop: '14px' }}>
+          <div className="flex items-center" style={{ gap: '7px', fontSize: '12px', fontWeight: 500, color: '#71798a' }}>
+            <span
+              className="inline-block rounded-full"
+              style={{ width: '9px', height: '9px', background: '#2E78C8' }}
+            />
+            Presencial
+          </div>
+          <div className="flex items-center" style={{ gap: '7px', fontSize: '12px', fontWeight: 500, color: '#71798a' }}>
+            <span
+              className="inline-block rounded-full"
+              style={{ width: '9px', height: '9px', background: '#93c5fd' }}
+            />
+            Virtual
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
