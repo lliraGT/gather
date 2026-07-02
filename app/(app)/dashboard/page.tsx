@@ -357,29 +357,62 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-5 shadow-sm">
-        <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+      <div
+        className="rounded-[14px] border border-[#dfe3ea] bg-white"
+        style={{ padding: '22px 26px 20px', marginBottom: '14px' }}
+      >
+        <div
+          className="flex flex-wrap items-center justify-between"
+          style={{ gap: '10px', marginBottom: '20px' }}
+        >
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-sm font-medium text-gray-700">
+            <p style={{ fontSize: '14px', fontWeight: 700, color: '#141c30', margin: 0 }}>
               {period === '12w' ? 'Últimas 12 semanas'
                 : period === 'ytd' ? `Año en curso (${currentYear})`
                 : period === 'year' ? `Año ${selectedYear}`
                 : 'Histórico completo'}
             </p>
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${trendLabel.color}`}>
+            <span
+              className="inline-flex items-center"
+              style={
+                Math.abs(slope) < 1
+                  ? { fontSize: '11px', fontWeight: 600, padding: '3px 9px', borderRadius: '20px', background: '#f3f4f6', color: '#6b7280' }
+                  : slope > 0
+                  ? { fontSize: '11px', fontWeight: 600, padding: '3px 9px', borderRadius: '20px', background: '#fffbeb', border: '1px solid #fde68a', color: '#b45309' }
+                  : { fontSize: '11px', fontWeight: 600, padding: '3px 9px', borderRadius: '20px', background: '#fef2f2', color: '#DC2626' }
+              }
+            >
               {trendLabel.text}
             </span>
           </div>
-          <div className="flex items-center gap-1 flex-shrink-0 flex-wrap">
+          <div className="flex items-center flex-shrink-0 flex-wrap" style={{ gap: '3px' }}>
             {(['12w', 'ytd', 'all'] as const).map(p => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
-                  period === p
-                    ? 'bg-[#2E78C8] text-white'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                }`}
+                className="transition-colors"
+                style={{
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  padding: '5px 11px',
+                  borderRadius: '7px',
+                  border: '1px solid transparent',
+                  transition: 'all .12s',
+                  background: period === p ? '#0D518C' : 'transparent',
+                  color: period === p ? '#fff' : '#71798a',
+                }}
+                onMouseEnter={e => {
+                  if (period !== p) {
+                    e.currentTarget.style.background = '#f0f4fa'
+                    e.currentTarget.style.color = '#0D518C'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (period !== p) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = '#71798a'
+                  }
+                }}
               >
                 {p === '12w' ? 'Últ. 12 sem.' : p === 'ytd' ? 'Este año' : 'Histórico'}
               </button>
@@ -391,11 +424,29 @@ export default function DashboardPage() {
               <button
                 key={y}
                 onClick={() => { setPeriod('year'); setSelectedYear(y) }}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
-                  period === 'year' && selectedYear === y
-                    ? 'bg-[#2E78C8] text-white'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                }`}
+                className="transition-colors"
+                style={{
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  padding: '5px 11px',
+                  borderRadius: '7px',
+                  border: '1px solid transparent',
+                  transition: 'all .12s',
+                  background: period === 'year' && selectedYear === y ? '#0D518C' : 'transparent',
+                  color: period === 'year' && selectedYear === y ? '#fff' : '#71798a',
+                }}
+                onMouseEnter={e => {
+                  if (!(period === 'year' && selectedYear === y)) {
+                    e.currentTarget.style.background = '#f0f4fa'
+                    e.currentTarget.style.color = '#0D518C'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!(period === 'year' && selectedYear === y)) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = '#71798a'
+                  }
+                }}
               >
                 {y}
               </button>
@@ -404,38 +455,40 @@ export default function DashboardPage() {
         </div>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={chartDataWithTrend}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <CartesianGrid horizontal vertical={false} stroke="#f0f3f8" />
             <XAxis
               dataKey="fecha"
-              tick={{ fontSize: 11, fill: '#6B7280' }}
+              tick={{ fontSize: 11, fill: '#71798a' }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(val, idx) => chartDataWithTrend.length > 20 ? (idx % 4 === 0 ? val : '') : val}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: '#6B7280' }}
+              tick={{ fontSize: 11, fill: '#71798a' }}
               axisLine={false}
               tickLine={false}
               width={35}
             />
             <Tooltip
-              contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #E5E7EB' }}
+              contentStyle={{ background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, padding: '10px' }}
+              itemStyle={{ color: '#fff' }}
+              labelStyle={{ color: '#fff' }}
             />
             <Line
               type="monotone"
               dataKey="total"
               name="Asistencia"
               stroke="#2E78C8"
-              strokeWidth={2}
-              dot={{ fill: '#2E78C8', r: 3 }}
-              activeDot={{ r: 5 }}
+              strokeWidth={2.5}
+              dot={{ fill: '#2E78C8', stroke: '#fff', strokeWidth: 1.5, r: 4 }}
+              activeDot={{ r: 6 }}
             />
             <Line
               type="monotone"
               dataKey="tendencia"
               stroke="#f59e0b"
-              strokeWidth={1.5}
-              strokeDasharray="6 3"
+              strokeWidth={1.6}
+              strokeDasharray="5 4"
               dot={false}
               activeDot={false}
               name="Tendencia"
