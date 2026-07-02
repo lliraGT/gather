@@ -560,19 +560,19 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <p className="text-sm font-medium text-gray-700">Historial reciente</p>
+      <div className="bg-white rounded-[14px] border border-[#dfe3ea] overflow-hidden">
+        <div className="px-[26px] pt-[18px] pb-[14px] border-b border-[#dfe3ea]">
+          <p className="text-sm font-bold text-[#141c30]">Historial reciente</p>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full">
             <thead>
-              <tr className="text-xs text-gray-500 border-b border-gray-50">
-                <th className="text-left px-5 py-3">Fecha</th>
-                <th className="text-right px-4 py-3">Presencial</th>
-                <th className="text-right px-4 py-3">Virtual</th>
-                <th className="text-right px-4 py-3">vs ant.</th>
-                <th className="text-right px-5 py-3 font-semibold">Total</th>
+              <tr className="bg-[#fafbfd] border-b border-[#dfe3ea]">
+                <th className="text-left px-[26px] py-[10px] text-[11px] font-bold uppercase tracking-[0.07em] text-[#71798a]">Fecha</th>
+                <th className="text-right px-[26px] py-[10px] text-[11px] font-bold uppercase tracking-[0.07em] text-[#71798a]">Presencial</th>
+                <th className="text-right px-[26px] py-[10px] text-[11px] font-bold uppercase tracking-[0.07em] text-[#71798a]">Virtual</th>
+                <th className="text-right px-[26px] py-[10px] text-[11px] font-bold uppercase tracking-[0.07em] text-[#71798a]">vs ant.</th>
+                <th className="text-right px-[26px] py-[10px] text-[11px] font-bold uppercase tracking-[0.07em] text-[#71798a]">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -582,15 +582,15 @@ export default function DashboardPage() {
                 const variation = nextRec != null
                   ? (rec?.total_general ?? 0) - (nextRec.total_general ?? 0)
                   : null
-                const varColor = variation === null ? '' : variation > 0 ? 'text-green-600' : variation < 0 ? 'text-red-500' : 'text-gray-400'
+                const varColor = variation === null ? '' : variation > 0 ? 'text-[#16a34a]' : variation < 0 ? 'text-[#DC2626]' : 'text-gray-400'
                 const varLabel = variation === null ? '—' : variation > 0 ? `+${variation}` : variation < 0 ? `${variation}` : '='
                 return (
-                  <tr key={s.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
-                    <td className="px-5 py-3 text-gray-700">{formatDate(s.date)}</td>
-                    <td className="px-4 py-3 text-right text-gray-600">{rec?.total_presencial ?? '—'}</td>
-                    <td className="px-4 py-3 text-right text-gray-600">{rec?.total_virtual ?? '—'}</td>
-                    <td className={`px-4 py-3 text-right text-sm ${varColor}`}>{varLabel}</td>
-                    <td className="px-5 py-3 text-right font-semibold text-gray-800">{rec?.total_general ?? '—'}</td>
+                  <tr key={s.id} className="border-b border-[#f0f3f8] last:border-0 hover:bg-[#fafbfd]">
+                    <td className="px-[26px] py-[13px] text-[13.5px] tabular-nums font-semibold text-[#141c30]">{formatDate(s.date)}</td>
+                    <td className="px-[26px] py-[13px] text-[13.5px] tabular-nums text-right text-[#3a4460] font-medium">{rec?.total_presencial ?? '—'}</td>
+                    <td className="px-[26px] py-[13px] text-[13.5px] tabular-nums text-right text-[#3a4460] font-medium">{rec?.total_virtual ?? '—'}</td>
+                    <td className={`px-[26px] py-[13px] text-[13.5px] tabular-nums text-right font-bold ${varColor}`}>{varLabel}</td>
+                    <td className="px-[26px] py-[13px] text-[13.5px] tabular-nums text-right font-bold text-[#141c30]">{rec?.total_general ?? '—'}</td>
                   </tr>
                 )
               })}
