@@ -64,25 +64,38 @@ export function AttendanceForm({
   }, [date])
 
   // Alineación vertical del panel derecho (solo desktop ≥1024px)
+  const tabsRef = useRef<HTMLDivElement>(null)
+  const asideRef = useRef<HTMLDivElement>(null)
   const multimediaRef = useRef<HTMLDivElement>(null)
   const notesCardRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const actionsRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
-    function fitNotes() {
+    function layoutPanel() {
       const ta = textareaRef.current
       if (!ta) return
 
       const mq = window.matchMedia('(min-width: 1024px)')
-      const notesCard = notesCardRef.current
-      const actions = actionsRef.current
-      const multi = multimediaRef.current
+      const aside = asideRef.current
+      const tabs = tabsRef.current
 
-      if (!mq.matches || !notesCard || !actions || !multi) {
+      if (!mq.matches) {
+        if (aside) aside.style.marginTop = ''
         ta.style.height = ''
         return
       }
+
+      // Baja el panel derecho para que su top quede a la altura de la
+      // primera fila de field cards (debajo de la línea de los tabs)
+      if (aside && tabs) {
+        aside.style.marginTop = `${tabs.offsetHeight + 18}px`
+      }
+
+      const notesCard = notesCardRef.current
+      const actions = actionsRef.current
+      const multi = multimediaRef.current
+      if (!notesCard || !actions || !multi) return
       // La card Multimedia solo tiene posición real cuando el tab Presencial está visible
       if (multi.offsetParent === null) return
 
@@ -95,12 +108,12 @@ export function AttendanceForm({
       ta.style.height = taH > 40 ? `${Math.round(taH)}px` : '40px'
     }
 
-    fitNotes()
-    const raf = requestAnimationFrame(fitNotes)
-    window.addEventListener('resize', fitNotes)
+    layoutPanel()
+    const raf = requestAnimationFrame(layoutPanel)
+    window.addEventListener('resize', layoutPanel)
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('resize', fitNotes)
+      window.removeEventListener('resize', layoutPanel)
     }
   }, [fields, notes, error, tab])
 
@@ -163,7 +176,7 @@ export function AttendanceForm({
         {/* Columna principal */}
         <div className="flex-1 min-w-0">
           {/* Tabs */}
-          <div className="flex border-b-2 border-[#dfe3ea] mb-[18px]">
+          <div ref={tabsRef} className="flex border-b-2 border-[#dfe3ea] mb-[18px]">
             <button
               type="button"
               onClick={() => setTab('pres')}
@@ -240,7 +253,7 @@ export function AttendanceForm({
         </div>
 
         {/* Panel derecho — solo desktop */}
-        <aside className="hidden lg:flex lg:flex-col lg:w-[254px] lg:flex-shrink-0 lg:sticky lg:top-8 lg:self-start">
+        <aside ref={asideRef} className="hidden lg:flex lg:flex-col lg:w-[254px] lg:flex-shrink-0 lg:sticky lg:top-8 lg:self-start">
           <div className="bg-white border border-[#dfe3ea] rounded-2xl px-[18px] py-5 mb-3">
             <p className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-[#71798a] mb-3.5">Resumen</p>
             <div className="flex items-center justify-between py-2 border-b border-[#f0f3f8]">
