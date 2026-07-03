@@ -48,9 +48,9 @@ export function Sidebar() {
   return (
     <aside className="w-[220px] flex-shrink-0 sticky top-0 h-screen bg-white border-r border-[#dfe3ea] flex flex-col">
       {/* Brand */}
-      <div className="flex items-center gap-2 px-5 py-[22px] border-b border-[#dfe3ea]">
-        <GatherLogo size={27} />
-        <span className="text-[15px] font-extrabold text-[#1E3A5F] tracking-[-0.01em]">GATHER</span>
+      <div className="flex items-center gap-2 px-5 py-[26px] border-b border-[#dfe3ea]">
+        <GatherLogo size={34} />
+        <span className="text-[18px] font-extrabold text-[#1E3A5F] tracking-[-0.01em]">GATHER</span>
       </div>
 
       {/* Nav */}
