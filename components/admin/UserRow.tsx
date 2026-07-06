@@ -113,7 +113,7 @@ export function UserRow({ user, avatarColor, onEdit, onToggleActive }: UserRowPr
         </div>
       </td>
       <td className="px-[18px] py-[13px] relative">
-        <div className="flex items-center justify-end gap-0.5 opacity-35 group-hover:opacity-100 transition-opacity duration-150">
+        <div className="flex items-center justify-end gap-0.5 opacity-35 group-hover:opacity-100 transition-opacity duration-[120ms]">
           <button
             type="button"
             onClick={onEdit}
