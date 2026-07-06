@@ -219,7 +219,7 @@ export default function HistoryPage() {
 
   return (
     <div className="pt-2 flex flex-col">
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex flex-col gap-0.5">
           <span className="text-[13px] font-semibold text-[#141c30]">{rangeLabel}</span>
           <span className="text-[11.5px] text-[#71798a]">
@@ -234,7 +234,7 @@ export default function HistoryPage() {
             className="flex items-center gap-1.5 px-3.5 py-[7px] rounded-[9px] border border-[#dfe3ea] bg-white text-[#141c30] text-[13px] font-semibold hover:bg-[#f0f4fa] transition-colors"
           >
             <i className="ti ti-download text-[13px]" aria-hidden="true" />
-            Exportar
+            <span className="hidden sm:inline">Exportar</span>
           </button>
           {canEdit && (
             <button
@@ -243,7 +243,7 @@ export default function HistoryPage() {
               className="flex items-center gap-1.5 px-3.5 py-[7px] rounded-[9px] bg-[#0D518C] text-white border border-[#0D518C] text-[13px] font-semibold hover:bg-[#083f73] transition-colors"
             >
               <i className="ti ti-plus text-[13px]" aria-hidden="true" />
-              Nueva sesión
+              <span className="hidden sm:inline">Nueva sesión</span>
             </button>
           )}
         </div>

@@ -16,7 +16,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         }`}
       >
         <i className="ti ti-list text-[13px]" aria-hidden="true" />
-        <span>Lista</span>
+        <span className="hidden sm:inline">Lista</span>
       </button>
       <button
         type="button"
@@ -26,7 +26,7 @@ export function ViewToggle({ value, onChange }: ViewToggleProps) {
         }`}
       >
         <i className="ti ti-layout-grid text-[13px]" aria-hidden="true" />
-        <span>Cards</span>
+        <span className="hidden sm:inline">Cards</span>
       </button>
     </div>
   )

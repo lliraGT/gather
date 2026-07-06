@@ -45,7 +45,7 @@ export function SessionCard({ date, values, total, delta, canEdit, isRemoving, o
 
   return (
     <div
-      className={`bg-white border border-[#dfe3ea] rounded-xl px-[18px] py-[13px] flex items-center gap-4 mb-2 last:mb-0 transition-all duration-150 hover:shadow-[0_2px_16px_rgba(13,81,140,0.09)] hover:border-[#c8d8ec] ${isRemoving ? 'opacity-0' : 'opacity-100'}`}
+      className={`bg-white border border-[#dfe3ea] rounded-xl px-3.5 py-3 gap-3 sm:px-[18px] sm:py-[13px] sm:gap-4 flex items-center mb-2 last:mb-0 transition-all duration-150 hover:shadow-[0_2px_16px_rgba(13,81,140,0.09)] hover:border-[#c8d8ec] ${isRemoving ? 'opacity-0' : 'opacity-100'}`}
     >
       <div className="w-10 flex-shrink-0 flex flex-col items-center">
         <span className="text-[22px] font-extrabold tracking-[-0.04em] text-[#1E3A5F] leading-none">
