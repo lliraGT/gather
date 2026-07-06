@@ -9,6 +9,7 @@ import { useUser } from '@/lib/context/UserContext'
 import { MonthSection } from '@/components/history/MonthSection'
 import { ViewToggle } from '@/components/history/ViewToggle'
 import { monthKey, monthRangeLabel } from '@/components/history/dateUtils'
+import { downloadHistoryCsv } from '@/components/history/exportCsv'
 
 interface Row {
   record_id: string
@@ -199,7 +200,7 @@ export default function HistoryPage() {
   }
 
   function handleExport() {
-    // Implemented in Task 5
+    downloadHistoryCsv(rows, `gather-historial-pagina-${page + 1}.csv`)
   }
 
   const canEdit = profile?.role === 'ADMIN' || profile?.role === 'EM'
