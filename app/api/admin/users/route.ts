@@ -51,7 +51,7 @@ export async function GET() {
   for (const svc of services ?? []) {
     if (!svc.created_by) continue
     const svcDate = new Date(svc.date + 'T00:00:00')
-    const diffWeeks = Math.round((currentWeekStart.getTime() - svcDate.getTime()) / (7 * 24 * 60 * 60 * 1000))
+    const diffWeeks = Math.floor((currentWeekStart.getTime() - svcDate.getTime()) / (7 * 24 * 60 * 60 * 1000))
     const index = 7 - diffWeeks
     if (index < 0 || index > 7) continue
     const arr = weeklyActivityByUser.get(svc.created_by) ?? Array(8).fill(0)
