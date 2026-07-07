@@ -33,6 +33,14 @@ interface AdminUsersResponse {
 
 const AVATAR_COLORS = ['#1E3A5F', '#0D518C', '#2E78C8', '#45506a', '#8a93a5']
 
+function avatarColorFor(id: string): string {
+  let sum = 0
+  for (let i = 0; i < id.length; i++) {
+    sum += id.charCodeAt(i)
+  }
+  return AVATAR_COLORS[sum % AVATAR_COLORS.length]
+}
+
 export default function AdminUsersPage() {
   const { profile, loading: profileLoading } = useUser()
   const router = useRouter()
@@ -248,11 +256,11 @@ export default function AdminUsersPage() {
               </tr>
             ) : (
               <>
-                {filteredUsers.map((u, i) => (
+                {filteredUsers.map((u) => (
                   <UserRow
                     key={u.id}
                     user={u}
-                    avatarColor={AVATAR_COLORS[i % AVATAR_COLORS.length]}
+                    avatarColor={avatarColorFor(u.id)}
                     onEdit={() => openEdit(u)}
                     onToggleActive={() => handleToggleActive(u)}
                   />

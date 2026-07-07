@@ -114,7 +114,7 @@ export async function GET() {
 
   const metrics = {
     total: allUsers.length,
-    active: allUsers.filter(u => u.active).length,
+    active: allUsers.filter(u => u.active && !u.isPending).length,
     pending: pendingList.length,
     sessionsThisMonth: sessionsThisMonth ?? 0,
     sessionsLastMonth: sessionsLastMonth ?? 0,
