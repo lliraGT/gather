@@ -184,7 +184,7 @@ export default function LoginPage() {
 
         <div className="relative flex flex-1 items-center">
           <div
-            className="relative max-w-[440px] transition-all duration-500"
+            className="relative w-full max-w-[560px] transition-all duration-500"
             style={{ opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(6px)' }}
           >
             <span
