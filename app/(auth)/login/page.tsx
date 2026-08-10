@@ -180,22 +180,42 @@ export default function LoginPage() {
           <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#0D518C]">
             Centro Bíblico El Camino
           </span>
-          <h2 className="mt-5 max-w-[400px] text-[33px] font-bold leading-[1.18] tracking-[-0.02em] text-[#1a2950]">
-            Cada domingo cuenta. Reúne a tu comunidad.
-          </h2>
-          <p className="mt-4 max-w-[380px] text-sm leading-relaxed text-[#516189]">
-            Registra la asistencia, da seguimiento a los miembros y haz crecer la familia de la iglesia, domingo a domingo.
-          </p>
         </div>
 
-        <div
-          className="relative border-l-[3px] border-[#0D518C] pl-5 transition-all duration-500"
-          style={{ opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(6px)' }}
-        >
-          <p className="m-0 max-w-[420px] text-[17px] font-medium italic leading-snug text-[#2a3760]">
-            &ldquo;{verse.text}&rdquo;
-          </p>
-          <p className="mt-2.5 text-[13px] font-bold text-[#0D518C]">{verse.ref}</p>
+        <div className="relative flex flex-1 items-center">
+          <div
+            className="relative max-w-[440px] transition-all duration-500"
+            style={{ opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(6px)' }}
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -left-3 -top-16 select-none font-serif text-[130px] leading-none text-[#0D518C]"
+              style={{ opacity: 0.16 }}
+            >
+              &ldquo;
+            </span>
+            <p
+              className="relative m-0 text-[34px] font-medium italic leading-[1.4] text-[#1a2950]"
+              style={{ fontFamily: "'Lora', serif" }}
+            >
+              {verse.text}
+            </p>
+            <div className="mt-5 flex items-center justify-between">
+              <p className="m-0 text-[13px] font-bold text-[#0D518C]">— {verse.ref}</p>
+              <div className="flex items-center gap-1.5">
+                {VERSES.map((_, i) => (
+                  <span
+                    key={i}
+                    className="h-1.5 rounded-full transition-all duration-300"
+                    style={{
+                      width: i === idx ? '16px' : '6px',
+                      backgroundColor: i === idx ? '#0D518C' : '#c3d4f5',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </aside>
     </div>
