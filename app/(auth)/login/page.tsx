@@ -27,10 +27,10 @@ import { GatherLogo } from '@/components/ui/GatherLogo'
 const ACCENT = '#0D518C'
 
 const VERSES = [
-  { text: 'Y considerémonos unos a otros para estimularnos al amor y a las buenas obras.', ref: 'Hebreos 10:24' },
-  { text: 'Donde están dos o tres congregados en mi nombre, allí estoy yo en medio de ellos.', ref: 'Mateo 18:20' },
-  { text: 'No dejando de congregarnos, sino exhortándonos.', ref: 'Hebreos 10:25' },
-  { text: 'Cada día acudían unánimes al templo y partían el pan con alegría.', ref: 'Hechos 2:46' },
+  { text: 'Consideremos cómo estimularnos unos a otros al amor y a las buenas obras.', ref: 'Hebreos 10:24 (NBLA)' },
+  { text: 'Porque donde están dos o tres reunidos en Mi nombre, allí estoy Yo en medio de ellos.', ref: 'Mateo 18:20 (NBLA)' },
+  { text: 'No dejando de congregarnos, como algunos tienen por costumbre, sino exhortándonos unos a otros, y mucho más al ver que el día se acerca.', ref: 'Hebreos 10:25 (NBLA)' },
+  { text: 'Día tras día continuaban unánimes en el templo y partiendo el pan en los hogares, comían juntos con alegría y sencillez de corazón.', ref: 'Hechos 2:46 (NBLA)' },
 ]
 
 export default function LoginPage() {
@@ -182,9 +182,9 @@ export default function LoginPage() {
           </span>
         </div>
 
-        <div className="relative flex flex-1 items-center">
+        <div className="relative flex flex-1 items-center justify-center">
           <div
-            className="relative w-full max-w-[640px] transition-all duration-500"
+            className="relative max-w-[440px] transition-all duration-500"
             style={{ opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(6px)' }}
           >
             <span
