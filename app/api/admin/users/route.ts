@@ -10,6 +10,8 @@ interface ProfileRow {
   active: boolean
 }
 
+const ASSIGNABLE_ROLES = ['ADMIN', 'EM', 'ANCIANO']
+
 function mostRecentSunday(d: Date): Date {
   const copy = new Date(d)
   copy.setDate(copy.getDate() - copy.getDay())
@@ -134,6 +136,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Email y rol son requeridos' }, { status: 400 })
   }
 
+  if (!ASSIGNABLE_ROLES.includes(role)) {
+    return NextResponse.json({ error: 'Rol inválido' }, { status: 400 })
+  }
+
   const adminClient = createAdminClient()
   const { data, error } = await adminClient.auth.admin.inviteUserByEmail(email, {
     redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/confirm`,
@@ -141,5 +147,15 @@ export async function POST(request: Request) {
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+
+  // El trigger handle_new_user corre antes de que GoTrue llene invited_at, así que
+  // siempre crea el perfil como MIEMBRO. El rol real lo asigna el servidor aquí
+  // (nunca se confía en el metadata para privilegios).
+  const { error: roleError } = await adminClient
+    .from('profiles')
+    .update({ role })
+    .eq('id', data.user.id)
+  if (roleError) return NextResponse.json({ error: roleError.message }, { status: 500 })
+
   return NextResponse.json(data)
 }

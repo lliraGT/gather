@@ -75,5 +75,16 @@ export async function POST(request: Request) {
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+
+  // Igual que en la invitación inicial: el trigger crea el perfil como MIEMBRO,
+  // así que el rol se reasigna aquí desde el servidor.
+  if (role && ['ADMIN', 'EM', 'ANCIANO'].includes(role)) {
+    const { error: roleError } = await adminClient
+      .from('profiles')
+      .update({ role })
+      .eq('id', data.user.id)
+    if (roleError) return NextResponse.json({ error: roleError.message }, { status: 500 })
+  }
+
   return NextResponse.json(data)
 }
