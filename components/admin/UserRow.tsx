@@ -1,14 +1,14 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { ROLE_BADGE } from './roleBadge'
+import { getRoleBadge } from './roleBadge'
 import { formatRelative, formatAbsolute } from './formatAccess'
 
 export interface UserRowData {
   id: string
   email: string
   full_name: string | null
-  role: 'ADMIN' | 'EM' | 'ANCIANO'
+  role: string
   active: boolean
   last_sign_in_at: string | null
   weekly_activity: number[] | null
@@ -54,7 +54,7 @@ export function UserRow({ user, avatarColor, onEdit, onToggleActive }: UserRowPr
     setMenuOpen(o => !o)
   }
 
-  const badge = ROLE_BADGE[user.role]
+  const badge = getRoleBadge(user.role)
   const activity = user.weekly_activity ?? Array(8).fill(0)
   const max = Math.max(...activity, 1)
 

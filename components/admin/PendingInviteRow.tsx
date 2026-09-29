@@ -1,10 +1,10 @@
 'use client'
 
-import { ROLE_BADGE } from './roleBadge'
+import { getRoleBadge } from './roleBadge'
 
 interface PendingInviteRowProps {
   email: string
-  role: 'ADMIN' | 'EM' | 'ANCIANO'
+  role: string
   invitedAt: string
   onResend: () => void
   resending: boolean
@@ -16,7 +16,7 @@ function daysSince(dateIso: string): number {
 }
 
 export function PendingInviteRow({ email, role, invitedAt, onResend, resending }: PendingInviteRowProps) {
-  const badge = ROLE_BADGE[role]
+  const badge = getRoleBadge(role)
   const days = daysSince(invitedAt)
   const daysLabel = days === 0 ? 'Invitado hoy' : `Invitado hace ${days} ${days === 1 ? 'día' : 'días'}`
 
